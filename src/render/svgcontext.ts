@@ -1,7 +1,5 @@
 import { RenderContext, pathToD } from './rendercontext.js';
-
-const esc = (s: string) =>
-  s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+import { escapeXml as esc } from '../core/text.js';
 const n = (v: number) => String(Math.round(v * 100) / 100);
 
 /** SVG backend producing a string (works in Node and the browser). Groups become <g class=… data-…>. */

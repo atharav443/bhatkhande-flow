@@ -9,6 +9,7 @@
 // Not written: tihai items and top-level spans. They are reported, and the XML is still written.
 
 import { readFileSync, writeFileSync } from 'node:fs';
+import { escapeXml as escapeText } from '../src/core/text';
 import { isLabelStudio, labelStudioToBandish } from '../src/input/fromLabelStudio';
 
 const USAGE = 'usage: npx tsx cli/bandish2xml.ts <in.json> <out.xml>';
@@ -20,11 +21,7 @@ type Json = Record<string, any>;
 
 /** Escape text for use inside XML. */
 function escapeXml(value: unknown): string {
-  return String(value)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;');
+  return escapeText(String(value));
 }
 
 /**

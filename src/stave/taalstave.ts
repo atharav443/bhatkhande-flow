@@ -1,34 +1,15 @@
 import { Element } from '../core/element.js';
-import { Glyph } from '../core/glyph.js';
 import { Tables } from '../core/tables.js';
 import { RuntimeError } from '../core/util.js';
-import { DEGREES, degreeText } from '../music/swar.js';
 import { Formatter } from '../formatting/formatter.js';
-import { KanGroup } from '../modifiers/kangroup.js';
-import { Note } from '../notes/note.js';
 import type { Voice } from '../notes/voice.js';
-import { LineEndBar, VibhagLine } from './barlines.js';
 import type { ColumnGrid } from './columngrid.js';
-import { TaalMarker } from './taalmarker.js';
-import { RepeatBar, RepeatType } from './repeatbar.js';
-import { Volta, VoltaType } from './volta.js';
 
-export type Lane = 'volta' | 'meend' | 'tihai' | 'kan' | 'swar' | 'lyric' | 'marker';
+import { buildDecorations } from './staveDecorations.js';
+import { measureRowExtents, nominalMetrics } from './staveMetrics.js';
+import type { Lane, NominalMetrics, StaveMatra } from './staveTypes.js';
 
-/** One matra of this row: its cycle position, the derived taal marker (if it starts a vibhag) and its column. */
-export interface StaveMatra {
-  pos: number;
-  marker?: string;
-  col: number;
-  id: string;
-  /** alternate ending this matra belongs to, and whether the ending's bracket starts / ends / is closed here */
-  volta?: string;
-  voltaStart?: boolean;
-  voltaEnd?: boolean;
-  voltaClosed?: boolean;
-  repeatBefore?: boolean;
-  repeatAfter?: boolean;
-}
+export type { Lane, NominalMetrics, StaveMatra } from './staveTypes.js';
 
 /**
  * One printed row = (part of) one taal cycle (VexFlow `Stave`). The stave owns y: it stacks the lanes
@@ -95,41 +76,10 @@ export class TaalStave extends Element {
   }
 
   /** step 3: lanes (VexFlow getYForLine) */
-  formatY(
-    y: number,
-    nominal: {
-      swarAbove: number;
-      swarBelow: number;
-      lyricAbove: number;
-      lyricBelow: number;
-      markerAbove: number;
-      markerBelow: number;
-    },
-  ): this {
+  formatY(y: number, nominal: NominalMetrics): this {
     const st = Tables.style;
     this.y = y;
-    let above = nominal.swarAbove,
-      below = nominal.swarBelow,
-      kanAbove = 0,
-      kanBelow = 0,
-      lyrAbove = nominal.lyricAbove,
-      lyrBelow = nominal.lyricBelow;
-    for (const v of this.voices)
-      for (const t of v.getTickables()) {
-        if (!(t instanceof Note)) continue;
-        const e = t.getExtents();
-        if (t.lane === 'swar') {
-          above = Math.max(above, e.above);
-          below = Math.max(below, e.below);
-          for (const g of t.getModifiersByCategory(KanGroup.CATEGORY) as KanGroup[]) {
-            kanAbove = Math.max(kanAbove, g.getAbove());
-            kanBelow = Math.max(kanBelow, g.getBelow());
-          }
-        } else if (t.lane === 'lyric') {
-          lyrAbove = Math.max(lyrAbove, e.above);
-          lyrBelow = Math.max(lyrBelow, e.below);
-        }
-      }
+    const ext = measureRowExtents(this.voices, nominal);
     let cur = y;
     if (this.matras.some((m) => m.volta)) {
       this.lanes.volta = cur + 2;
@@ -143,17 +93,17 @@ export class TaalStave extends Element {
       this.lanes.tihai = cur + this.reserved.tihai - 2;
       cur += this.reserved.tihai;
     }
-    if (kanAbove > 0) {
-      this.lanes.kan = cur + kanAbove;
-      cur = this.lanes.kan + kanBelow + st.decor.kanLift;
+    if (ext.kanAbove > 0) {
+      this.lanes.kan = cur + ext.kanAbove;
+      cur = this.lanes.kan + ext.kanBelow + st.decor.kanLift;
     }
-    this.lanes.swar = cur + above;
-    cur = this.lanes.swar + below;
+    this.lanes.swar = cur + ext.swarAbove;
+    cur = this.lanes.swar + ext.swarBelow;
     this.barTop = this.lanes.swar - nominal.swarAbove - st.bar.overshoot;
     if (this.hasSwarCurves) cur += st.curve.gap + st.curve.depth;
     if (this.hasLyricLine) {
-      this.lanes.lyric = cur + st.spacing.swarToLyric + lyrAbove;
-      cur = this.lanes.lyric + lyrBelow;
+      this.lanes.lyric = cur + st.spacing.swarToLyric + ext.lyricAbove;
+      cur = this.lanes.lyric + ext.lyricBelow;
       this.barBottom = this.lanes.lyric + nominal.lyricBelow + st.bar.overshoot;
       if (this.hasLyricCurves) cur += st.curve.gap + st.curve.depth + 3;
     } else {
@@ -167,7 +117,14 @@ export class TaalStave extends Element {
     const hasMarker = this.matras.some((m) => m.marker);
     cur = hasMarker ? this.lanes.marker + nominal.markerBelow : cur;
     this.height = cur - y;
-    this.buildDecorations();
+    this.children = buildDecorations({
+      matras: this.matras,
+      grid: this.grid!,
+      formatter: this.formatter,
+      lanes: this.lanes,
+      barTop: this.barTop,
+      barBottom: this.barBottom,
+    });
     return this;
   }
 
@@ -196,81 +153,6 @@ export class TaalStave extends Element {
     return g.x(c) + g.matraWidth;
   }
 
-  /** bars and taal markers (VexFlow: Barline / StaveText stave modifiers) */
-  protected buildDecorations(): void {
-    const g = this.grid!;
-    this.children = [];
-    const first = this.matras[0];
-    if (first.repeatBefore)
-      this.children.push(
-        new RepeatBar(RepeatType.BEGIN, g.x(first.col) - g.vibhagGap / 2 - 7, this.barTop, this.barBottom),
-      );
-    this.matras.forEach((m, i) => {
-      const prev = this.matras[i - 1];
-      if (i > 0 && g.barBefore(m.col)) {
-        const end = !!prev.repeatAfter,
-          begin = !!m.repeatBefore;
-        if (end || begin)
-          this.children.push(
-            new RepeatBar(
-              end && begin ? RepeatType.BOTH : end ? RepeatType.END : RepeatType.BEGIN,
-              g.barX(m.col),
-              this.barTop,
-              this.barBottom,
-            ),
-          );
-        else
-          this.children.push(
-            new VibhagLine(g.barX(m.col), this.barTop, this.barBottom).setData('before_matra', m.pos),
-          );
-      }
-      if (m.marker) {
-        const mc = this.formatter.getMatraContext(i);
-        const first = mc?.ticks[0];
-        const cx = first ? first.getCenterX() : g.x(m.col) + g.matraWidth / 2;
-        this.children.push(new TaalMarker(m.marker, cx, this.lanes.marker!).setData('matra_number', m.pos));
-      }
-    });
-    const last = this.matras[this.matras.length - 1];
-    if (last.repeatAfter)
-      this.children.push(
-        new RepeatBar(
-          RepeatType.END,
-          g.x(last.col) + g.matraWidth + g.vibhagGap / 2,
-          this.barTop,
-          this.barBottom,
-        ),
-      );
-    else if (last.col === g.columns - 1)
-      this.children.push(new LineEndBar(g.endBarX(), this.barTop, this.barBottom));
-    // volta brackets: one piece per run of matras with the same ending label (BEGIN/MID/END like VexFlow)
-    for (let i = 0; i < this.matras.length;) {
-      const lab = this.matras[i].volta;
-      if (!lab) {
-        i++;
-        continue;
-      }
-      let j = i;
-      while (j + 1 < this.matras.length && this.matras[j + 1].volta === lab) j++;
-      const a = this.matras[i],
-        b = this.matras[j];
-      const begins = !!a.voltaStart,
-        ends = !!b.voltaEnd && !!b.voltaClosed;
-      const type =
-        begins && ends
-          ? VoltaType.BEGIN_END
-          : begins
-            ? VoltaType.BEGIN
-            : ends
-              ? VoltaType.END
-              : VoltaType.MID;
-      const x0 = g.x(a.col) - g.vibhagGap / 2 + 1,
-        x1 = g.x(b.col) + g.matraWidth + g.vibhagGap / 2 - 1;
-      this.children.push(new Volta(type, lab, x0, x1, this.lanes.volta!));
-      i = j + 1;
-    }
-  }
-
   draw(): void {
     const ctx = this.checkContext();
     for (const c of this.children) c.setContext(ctx).draw();
@@ -279,25 +161,5 @@ export class TaalStave extends Element {
   }
 
   /** nominal line metrics so every row of a page uses the same baseline spacing */
-  static nominalMetrics(): {
-    swarAbove: number;
-    swarBelow: number;
-    lyricAbove: number;
-    lyricBelow: number;
-    markerAbove: number;
-    markerBelow: number;
-  } {
-    const st = Tables.style;
-    const sw = DEGREES.map((d) => new Glyph(degreeText(d, st.script), 'swar', st.fontSize.swar).shape);
-    const ly = new Glyph('सकीमुऽ', 'lyric', st.fontSize.lyric).shape;
-    const mk = new Glyph('×०२३', 'marker', st.fontSize.marker).shape;
-    return {
-      swarAbove: Math.max(...sw.map((s) => -s.inkTop)),
-      swarBelow: Math.max(0, ...sw.map((s) => s.inkBottom)),
-      lyricAbove: -ly.inkTop,
-      lyricBelow: Math.max(0, ly.inkBottom),
-      markerAbove: -mk.inkTop,
-      markerBelow: Math.max(0, mk.inkBottom),
-    };
-  }
+  static nominalMetrics = nominalMetrics;
 }

@@ -241,6 +241,6 @@ Other boxes (`vibhag_line`, `line_end_bar`, `taal_marker`, `komal_mark`, `octave
 
 ## Diagnostics
 
-A problem in the input never stops the render. Each one is printed as `[level] code: message (path)`. Codes include `model.empty` (no sections), `taal.unknown`, `swar.unknown`, `matra.sequence`, `matra.underfull`, `duration.invalid`, `repeat.offbar`, `tihai.sam`. The full list is in `src/input/lower.ts` and `src/input/fromJSON.ts` (search for `code:`).
+A problem in the input never stops the render. Each one is printed as `[level] code: message (path)`. Codes include `model.empty` (no sections), `taal.unknown`, `swar.unknown`, `matra.sequence`, `matra.underfull`, `duration.invalid`, `repeat.offbar`, `tihai.sam`. The full list is in the files under `src/input/` (search for `code:`).
 
 If you see `model.empty` and `taal.unknown` together, the file was not recognised as any of the three formats. Check that a Label Studio export still has its `data` and `annotations` or `predictions`, and that bandish JSON has a top-level `sections` array.

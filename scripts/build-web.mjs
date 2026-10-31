@@ -33,7 +33,7 @@ const copyJson = (dir, prefix = '') => {
   for (const f of readdirSync(dir)) {
     const p = join(dir, f);
     if (statSync(p).isDirectory()) copyJson(p, `${prefix}${f}-`);
-    else if (/\.(json|xml)$/.test(f)) cpSync(p, join(ex, prefix + f));
+    else if (f.endsWith('.json') || f.endsWith('.xml')) cpSync(p, join(ex, prefix + f));
   }
 };
 copyJson(join(root, 'examples'));

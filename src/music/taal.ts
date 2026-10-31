@@ -85,11 +85,9 @@ const TABLE: Record<string, Row> = {
   },
 };
 
+/** Lowercases and drops spaces, underscores and hyphens, so "Tin-Taal" and "tintaal" compare equal. */
 const norm = (s: string) =>
-  s
-    .trim()
-    .toLowerCase()
-    .replace(/[\s_\-]+/g, '');
+  [...s.toLowerCase()].filter((c) => c.trim() !== '' && c !== '_' && c !== '-').join('');
 
 function build(id: string, display: string, vibhags: number[], markers: string[]): TaalDef {
   const starts: number[] = [];
@@ -157,9 +155,12 @@ export const expectedPos = (t: TaalDef, startMatra: number, k: number) =>
 
 /** How a taal marker is printed. Bhatkhande books: × for sam, ० for khali, Devanagari numerals for the other talis. */
 const DEVA_DIGITS = '०१२३४५६७८९';
+const toDevanagariDigits = (text: string) =>
+  [...text].map((c) => (c >= '0' && c <= '9' ? DEVA_DIGITS[Number(c)] : c)).join('');
+
 export function markerText(marker: string, script: 'devanagari' | 'latin'): string {
   const m = marker.trim();
-  if (/^x$/i.test(m) || m === '×') return '×';
+  if (m.toLowerCase() === 'x' || m === '×') return '×';
   if (m === '0' || m === 'O' || m === 'o' || m === '०') return script === 'devanagari' ? '०' : '0';
-  return script === 'devanagari' ? m.replace(/[0-9]/g, (d) => DEVA_DIGITS[Number(d)]) : m;
+  return script === 'devanagari' ? toDevanagariDigits(m) : m;
 }

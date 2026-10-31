@@ -1,4 +1,5 @@
 import { BoundingBox } from '../core/boundingbox.js';
+import { cubicPoints, pathToD, quadraticPoints, type PathCommand } from './pathmath.js';
 
 export interface GroupRecord {
   cls: string;
@@ -81,28 +82,14 @@ export abstract class RenderContext {
     return this;
   }
   quadraticCurveTo(cx: number, cy: number, x: number, y: number): this {
-    const p0 = this.pen;
-    for (let i = 1; i <= 8; i++) {
-      const t = i / 8,
-        a = (1 - t) ** 2,
-        b = 2 * (1 - t) * t,
-        c = t * t;
-      this.extend(a * p0.x + b * cx + c * x, a * p0.y + b * cy + c * y);
-    }
+    for (const p of quadraticPoints(this.pen, { x: cx, y: cy }, { x, y })) this.extend(p.x, p.y);
     this.path.push(['Q', cx, cy, x, y]);
     this.pen = { x, y };
     return this;
   }
   bezierCurveTo(c1x: number, c1y: number, c2x: number, c2y: number, x: number, y: number): this {
-    const p0 = this.pen;
-    for (let i = 1; i <= 12; i++) {
-      const t = i / 12,
-        a = (1 - t) ** 3,
-        b = 3 * (1 - t) ** 2 * t,
-        c = 3 * (1 - t) * t * t,
-        d = t ** 3;
-      this.extend(a * p0.x + b * c1x + c * c2x + d * x, a * p0.y + b * c1y + c * c2y + d * y);
-    }
+    for (const p of cubicPoints(this.pen, { x: c1x, y: c1y }, { x: c2x, y: c2y }, { x, y }))
+      this.extend(p.x, p.y);
     this.path.push(['C', c1x, c1y, c2x, c2y, x, y]);
     this.pen = { x, y };
     return this;
@@ -153,22 +140,14 @@ export abstract class RenderContext {
   }
 
   // ---- extent tracking
-  protected path: (string | number)[][] = [];
+  protected path: PathCommand[] = [];
   private extend(x: number, y: number) {
     this.extendBox(new BoundingBox(x, y, 0, 0));
   }
   protected extendBox(b: BoundingBox) {
-    const pad = 0;
     for (const gi of this.open) {
       const g = this.groups[gi];
-      const bb = b.clone();
-      if (pad) {
-        bb.x -= pad;
-        bb.y -= pad;
-        bb.w += 2 * pad;
-        bb.h += 2 * pad;
-      }
-      g.bbox = g.bbox ? g.bbox.mergeWith(bb) : bb;
+      g.bbox = g.bbox ? g.bbox.mergeWith(b.clone()) : b.clone();
     }
   }
   /** widen the open groups' boxes by half the stroke width (call after stroking) */
@@ -187,8 +166,8 @@ export abstract class RenderContext {
   // ---- backend hooks
   protected abstract beginGroup(cls: string, id: string, data: Record<string, string | number>): void;
   protected abstract endGroup(): void;
-  protected abstract strokePath(path: (string | number)[][], halfWidth: number): void;
-  protected abstract fillPath(path: (string | number)[][]): void;
+  protected abstract strokePath(path: PathCommand[], halfWidth: number): void;
+  protected abstract fillPath(path: PathCommand[]): void;
   protected abstract fillCircle(cx: number, cy: number, r: number): void;
   protected abstract drawGlyphPath(d: string, x: number, y: number): void;
   protected abstract drawText(
@@ -200,14 +179,4 @@ export abstract class RenderContext {
   abstract resize(width: number, height: number, background?: string): this;
 }
 
-export const pathToD = (p: (string | number)[][]) =>
-  p
-    .map(
-      (c) =>
-        c[0] +
-        c
-          .slice(1)
-          .map((v) => String(Math.round((v as number) * 100) / 100))
-          .join(' '),
-    )
-    .join('');
+export { pathToD };

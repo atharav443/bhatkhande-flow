@@ -85,7 +85,7 @@ src/            the engine (TypeScript)
   font/           font loading and shaping (Node and browser)
   index.ts        public API; node.ts and browser.ts add the font providers
 cli/            command-line tools: render, ls2bandish, bandish2xml
-web/            the playground: index.html, playground.css, playground.js
+web/            the playground: index.html, playground.css, playground*.js
 scripts/        build-web.mjs (bundle for the browser), serve.mjs (local server)
 test/           engine tests; test/browser/smoke.mjs for the playground
 examples/       sample bandishes used by the tests; examples/labelstudio/ holds pages made from Label Studio annotations

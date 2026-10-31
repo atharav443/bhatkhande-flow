@@ -1,4 +1,5 @@
 import type * as fontkit from 'fontkit';
+import { isCombiningMark } from '../core/text.js';
 import type { FontProvider, FontRole, Shape } from './provider.js';
 
 /** Environment-free part of the fontkit provider: it only needs already-parsed fonts, so the same shaping code runs in Node and in the browser. */
@@ -10,7 +11,7 @@ export interface FontSet {
   notoReg: FKFont;
 }
 
-const isMark = (cp: number) => /\p{M}/u.test(String.fromCodePoint(cp)) || cp === 0x200d || cp === 0x200c;
+const isMark = isCombiningMark;
 
 /**
  * Shapes with fontkit (OpenType Indic shaper) and returns OUTLINES.

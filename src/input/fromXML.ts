@@ -1,3 +1,4 @@
+import { splitList } from '../core/text.js';
 import { parseXML, type XNode } from './xml.js';
 import { normalizeBandish } from './fromJSON.js';
 import type { BandishModel, Diagnostic } from './types.js';
@@ -64,7 +65,7 @@ export function fromXML(src: string): { model: BandishModel; diagnostics: Diagno
     for (const c of md.children) {
       if (c.name === 'tala' || c.name === 'taal') {
         // custom taal in XML: vibhags="3,3,2" markers="X,2,0" (comma or space separated)
-        const list = (v?: string) => (v === undefined ? undefined : v.split(/[\s,]+/).filter(Boolean));
+        const list = (v?: string) => (v === undefined ? undefined : splitList(v));
         meta.taal = {
           ...c.attrs,
           ...(c.attrs.vibhags !== undefined ? { vibhags: list(c.attrs.vibhags) } : {}),

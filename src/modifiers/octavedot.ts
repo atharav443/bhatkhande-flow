@@ -1,3 +1,4 @@
+import { numbersIn } from '../core/text.js';
 import { Tables } from '../core/tables.js';
 import type { Shape } from '../font/provider.js';
 import { Modifier, ModifierPosition } from './modifier.js';
@@ -12,7 +13,7 @@ export const SA_STEM_FRACTION = 0.84;
 export function stemCenterOffset(shape: Shape): number {
   const w = shape.inkRight - shape.inkLeft;
   if (shape.pathD) {
-    const nums = shape.pathD.match(/-?\d+(?:\.\d+)?/g)?.map(Number) ?? [];
+    const nums = numbersIn(shape.pathD);
     const pts: Array<[number, number]> = [];
     for (let i = 0; i + 1 < nums.length; i += 2) pts.push([nums[i], nums[i + 1]]);
     const lowY = shape.inkBottom - 0.35 * (shape.inkBottom - shape.inkTop);

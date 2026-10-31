@@ -7,12 +7,70 @@ export interface XNode {
 }
 
 const ENT: Record<string, string> = { amp: '&', lt: '<', gt: '>', quot: '"', apos: "'" };
-const decode = (s: string) =>
-  s.replace(/&(#x[0-9a-fA-F]+|#\d+|\w+);/g, (m, e: string) => {
-    if (e[0] === '#')
-      return String.fromCodePoint(e[1] === 'x' ? parseInt(e.slice(2), 16) : parseInt(e.slice(1), 10));
-    return ENT[e] ?? m;
-  });
+
+/** The character for an entity name (without & and ;): "amp", "#65" or "#x41". Undefined if it is not one. */
+function decodeEntity(name: string): string | undefined {
+  if (name[0] !== '#') return Object.prototype.hasOwnProperty.call(ENT, name) ? ENT[name] : undefined;
+  const hex = name[1] === 'x';
+  const digits = name.slice(hex ? 2 : 1);
+  const isValid = (c: string) =>
+    (c >= '0' && c <= '9') || (hex && c.toLowerCase() >= 'a' && c.toLowerCase() <= 'f');
+  if (!digits || ![...digits].every(isValid)) return undefined;
+  return String.fromCodePoint(parseInt(digits, hex ? 16 : 10));
+}
+
+/** Replaces &amp; &#65; &#x41; style entities; anything unrecognised is left as written. */
+function decode(s: string): string {
+  let out = '';
+  let i = 0;
+  while (i < s.length) {
+    const amp = s.indexOf('&', i);
+    if (amp < 0) break;
+    const semi = s.indexOf(';', amp);
+    const decoded = semi < 0 ? undefined : decodeEntity(s.slice(amp + 1, semi));
+    if (decoded === undefined) {
+      out += s.slice(i, amp + 1);
+      i = amp + 1;
+    } else {
+      out += s.slice(i, amp) + decoded;
+      i = semi + 1;
+    }
+  }
+  return out + s.slice(i);
+}
+
+const isSpace = (c: string | undefined) => c !== undefined && c.trim() === '';
+
+/** Reads the tag name at the start of `inner` (`<name attr="x">`); returns it and the rest of the text. */
+function readTagName(inner: string): { name: string; rest: string } | undefined {
+  let start = 0;
+  while (isSpace(inner[start])) start++;
+  let end = start;
+  while (end < inner.length && !isSpace(inner[end]) && inner[end] !== '/' && inner[end] !== '>') end++;
+  return end > start ? { name: inner.slice(start, end), rest: inner.slice(end) } : undefined;
+}
+
+/** Reads name="value" / name='value' pairs; junk between them is skipped. */
+function readAttributes(text: string): Record<string, string> {
+  const attrs: Record<string, string> = {};
+  let i = 0;
+  while (i < text.length) {
+    while (i < text.length && (isSpace(text[i]) || text[i] === '=')) i++;
+    const nameStart = i;
+    while (i < text.length && !isSpace(text[i]) && text[i] !== '=') i++;
+    const name = text.slice(nameStart, i);
+    while (isSpace(text[i])) i++;
+    if (!name || text[i] !== '=') continue;
+    i++;
+    while (isSpace(text[i])) i++;
+    const quote = text[i];
+    const close = quote === '"' || quote === "'" ? text.indexOf(quote, i + 1) : -1;
+    if (close < 0) continue;
+    attrs[name] = decode(text.slice(i + 1, close));
+    i = close + 1;
+  }
+  return attrs;
+}
 
 export function parseXML(src: string): XNode {
   const root: XNode = { name: '#root', attrs: {}, children: [], text: '' };
@@ -57,12 +115,9 @@ export function parseXML(src: string): XNode {
     }
     const selfClose = body.endsWith('/');
     const inner = selfClose ? body.slice(0, -1) : body;
-    const m = /^\s*([^\s/>]+)/.exec(inner);
-    if (!m) throw new Error('Malformed tag');
-    const node: XNode = { name: m[1], attrs: {}, children: [], text: '' };
-    const re = /([^\s=]+)\s*=\s*(?:"([^"]*)"|'([^']*)')/g;
-    let a: RegExpExecArray | null;
-    while ((a = re.exec(inner.slice(m[0].length)))) node.attrs[a[1]] = decode(a[2] ?? a[3] ?? '');
+    const tag = readTagName(inner);
+    if (!tag) throw new Error('Malformed tag');
+    const node: XNode = { name: tag.name, attrs: readAttributes(tag.rest), children: [], text: '' };
     top.children.push(node);
     if (!selfClose) stack.push(node);
   }

@@ -32,39 +32,77 @@ const LATIN_NAMES: Record<string, Degree> = {
   ni: 'N',
 };
 
+/** Unicode svara marks: ॒ (anudatta) = komal, ॑ (udatta) = tivra. Returns the parsed base with the flag applied, or null if no mark. */
+function parseSvaraMark(t: string): ParsedSwar | undefined | null {
+  const flag = t.endsWith('॒') ? 'komal' : t.endsWith('॑') ? 'tivra' : null;
+  if (!flag) return null;
+  const base = parseSwarText(t.slice(0, -1));
+  return base && { ...base, [flag]: true };
+}
+
+/** Splits a trailing octave mark off the text: one or two of ' or . , or a single nukta. */
+function splitOctaveSuffix(t: string): { base: string; suffix: string } | null {
+  const last = t[t.length - 1];
+  let len = 0;
+  if (last === '़') len = 1;
+  else if (last === "'" || last === '.') len = t[t.length - 2] === last ? 2 : 1;
+  const base = t.slice(0, t.length - len);
+  return len && base ? { base, suffix: t.slice(base.length) } : null;
+}
+
+/**
+ * Octave shorthands: S' / सा' = taar, S. / ध़ / ध. = mandra (doubled = ati-).
+ * Returns the parsed base with octaveHint applied, or null if no suffix.
+ */
+function parseOctaveSuffix(t: string): ParsedSwar | undefined | null {
+  const split = splitOctaveSuffix(t);
+  if (!split) return null;
+  const { base, suffix } = split;
+  const parsed = parseSwarText(base);
+  if (!parsed) return undefined;
+  const n = suffix === '़' ? 1 : suffix.length;
+  return { ...parsed, octaveHint: suffix[0] === "'" ? n : -n };
+}
+
+/** Single-letter notation: capitals are shuddha, r g d n = komal, m = tivra, s / p accepted in lowercase. */
+const LETTER_NOTES: Record<string, ParsedSwar> = {
+  ...Object.fromEntries(DEGREES.map((d) => [d, { degree: d }])),
+  r: { degree: 'R', komal: true },
+  g: { degree: 'G', komal: true },
+  d: { degree: 'D', komal: true },
+  n: { degree: 'N', komal: true },
+  m: { degree: 'M', tivra: true },
+  s: { degree: 'S' },
+  p: { degree: 'P' },
+};
+
+/** सा, रे etc: the first letter picks the degree; anusvara / candrabindu anywhere means taar. */
+function parseDevanagariNote(t: string): ParsedSwar | undefined {
+  const degree = DEVA_BASE[[...t][0]];
+  if (!degree) return undefined;
+  return { degree, octaveHint: t.includes('ं') || t.includes('ँ') ? 1 : undefined };
+}
+
+function parseLatinName(t: string): ParsedSwar | undefined {
+  const degree = LATIN_NAMES[t.toLowerCase()];
+  return degree && { degree };
+}
+
+/** A bare note with no marks: Devanagari, Latin name, or single letter. */
+function parseBaseNote(t: string): ParsedSwar | undefined {
+  const letter = LETTER_NOTES[t];
+  return parseDevanagariNote(t) ?? parseLatinName(t) ?? (letter && { ...letter });
+}
+
 /** Accepts Devanagari (सा रे ग म प ध नि, with variants), Latin names (Sa Re ...), and single letters (S R G M P D N; r g d n = komal, m = tivra). */
 export function parseSwarText(raw: string): ParsedSwar | undefined {
-  let t = raw.trim();
+  const t = raw.trim();
   if (!t) return undefined;
-  // octave shorthands used in readings and typed notation: S' / सा' = taar, S. / ध़ / ध. = mandra (doubled = ati-)
-  // Unicode svara marks: ॒ (anudatta) = komal, ॑ (udatta) = tivra
-  if (t.endsWith('॒')) {
-    const b = parseSwarText(t.slice(0, -1));
-    return b && { ...b, komal: true };
-  }
-  if (t.endsWith('॑')) {
-    const b = parseSwarText(t.slice(0, -1));
-    return b && { ...b, tivra: true };
-  }
-  const m = /^(.*?)('{1,2}|\.{1,2}|़)$/.exec(t);
-  if (m && m[1]) {
-    const base = parseSwarText(m[1]);
-    if (!base) return undefined;
-    const n = m[2] === '़' ? 1 : m[2].length;
-    return { ...base, octaveHint: m[2][0] === "'" ? n : -n };
-  }
-  const first = [...t][0];
-  if (DEVA_BASE[first]) {
-    const hint = /[ंँ]/.test(t) ? 1 : undefined; // anusvara / candrabindu
-    return { degree: DEVA_BASE[first], octaveHint: hint };
-  }
-  const lower = t.toLowerCase();
-  if (LATIN_NAMES[lower]) return { degree: LATIN_NAMES[lower] };
-  if (/^[SRGMPDN]$/.test(t)) return { degree: t as Degree };
-  if (/^[rgdn]$/.test(t)) return { degree: t.toUpperCase() as Degree, komal: true };
-  if (t === 'm') return { degree: 'M', tivra: true };
-  if (t === 's' || t === 'p') return { degree: t.toUpperCase() as Degree };
-  return undefined;
+  const marked = parseSvaraMark(t);
+  if (marked !== null) return marked;
+  const suffixed = parseOctaveSuffix(t);
+  if (suffixed !== null) return suffixed;
+  return parseBaseNote(t);
 }
 
 export function parseOctave(v: unknown): number | undefined {
