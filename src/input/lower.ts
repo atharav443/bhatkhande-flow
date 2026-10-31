@@ -86,6 +86,7 @@ export function lowerBandish(model: BandishModel, inherited: Diagnostic[] = []):
         message: `start-matra ${startMatra} outside 1..${taal.total}`,
         path: `sections[${si}]`,
       });
+    const clampedStart = Math.min(Math.max(startMatra, 1), taal.total);
     let k = 0;
     let carry = ZERO;
     // volta: a new ending label rewinds the cycle position to where the first ending began (endings replace one another)
@@ -99,7 +100,7 @@ export function lowerBandish(model: BandishModel, inherited: Diagnostic[] = []):
         if (mm.volta && prevVolta && mm.volta !== prevVolta) k = voltaFirstK;
         else if (mm.volta && !prevVolta) voltaFirstK = k;
         prevVolta = mm.volta;
-        const exp = expectedPos(taal, Math.min(Math.max(startMatra, 1), taal.total), k++);
+        const exp = expectedPos(taal, clampedStart, k++);
         let pos = exp;
         if (mm.index !== undefined) {
           if (mm.index < 1 || mm.index > taal.total)
@@ -110,13 +111,18 @@ export function lowerBandish(model: BandishModel, inherited: Diagnostic[] = []):
               path,
             });
           else {
-            if (mm.index !== exp)
+            if (mm.index !== exp) {
               diagnostics.push({
                 level: 'warn',
                 code: 'matra.sequence',
-                message: `matra index ${mm.index} but position ${exp} expected from the section start`,
+                message:
+                  `matra index ${mm.index} but position ${exp} expected after the matra before it; ` +
+                  `one of the two is numbered wrong (counting continues from ${mm.index})`,
                 path,
               });
+              // continue counting from the authored index, so one slip is reported once, not on every later matra
+              k = ((((mm.index - clampedStart) % taal.total) + taal.total) % taal.total) + 1;
+            }
             pos = mm.index;
           }
         }

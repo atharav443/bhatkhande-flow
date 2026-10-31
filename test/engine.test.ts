@@ -351,6 +351,24 @@ test('taar dot: over the stem of the ा on सा (right of centre, inside the 
   assert.ok(sa >= 4 && other >= 1, `checked ${sa} taar sa dots and ${other} other dots`);
 });
 
+test('matra numbering: one slip gives one matra.sequence warning, not one per later matra', () => {
+  // pickup numbered 15, 16 but the next line starts at 9 (the book's pickup is 7, 8)
+  const m = (index: number) => ({ index, events: ['सा'] });
+  const bandish = {
+    metadata: { taal: 'teentaal' },
+    sections: [
+      {
+        startMatra: 15,
+        lines: [{ matras: [m(15), m(16)] }, { matras: [9, 10, 11, 12, 13, 14, 15, 16].map(m) }],
+      },
+    ],
+  };
+  const r = new Factory({ fonts }).renderBandish(bandish);
+  const seq = r.diagnostics.filter((d) => d.code === 'matra.sequence');
+  assert.equal(seq.length, 1, seq.map((d) => d.message).join('\n'));
+  assert.match(seq[0].message, /matra index 9 but position 1/);
+});
+
 /* ---------------- volta + repeat (VexFlow Volta / Barline repeat types) */
 test('volta: first ending closed (BEGIN_END) with :‖, second ending open (BEGIN) on its own row under the first', () => {
   const r = render('volta-demo.json');
