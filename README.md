@@ -1,11 +1,30 @@
 # bhatkhande-flow
 
-A rendering engine for **Bhatkhande notation**, built on VexFlow's architecture. Input is a bandish in JSON or swartaal XML. Output is an SVG plus dataset labels (the BhatkhandeSet class names), written as YOLO and JSON.
+A rendering engine for **Bhatkhande notation**, built on VexFlow's architecture. Input is a bandish as JSON, swartaal XML or a Label Studio export. Output is an SVG plus dataset labels (the BhatkhandeSet class names), written as YOLO and JSON.
 
 ```bash
 npm install
-npm test                                   # 16 tests: grid, conventions, label counts vs the hand annotations
+npm test                                   # 20 tests: grid, conventions, label counts vs the hand annotations
 npm run render -- examples/bhimpalasi-geet.json out --png
+```
+
+## What can I give it?
+
+Three input formats, all turned into one model before drawing. `npm run render -- <file> out --png` detects the format from the content.
+
+| You have | Format | Minimal example |
+|---|---|---|
+| A bandish you type or generate | **Bandish JSON**: `metadata` → `sections` → `lines` → `matras` → `events` | `examples/minimal-teentaal.json` |
+| A swartaal file, or you prefer tags | **Swartaal XML**: `<hindustani-composition>` with `<section>`, `<line>`, `<matra>`, `<swar>`, `<lyric>` | `examples/minimal-teentaal.xml` |
+| Annotations of a scanned page from Label Studio | **Label Studio export**: `Export` → `JSON` (full format), one task or a list of tasks | `examples/labelstudio/raag-bhairav-geet3-raw-export.json` |
+
+The two minimal examples hold the same four matras and render to identical SVG. For every feature at once (kan, khatka, meend, volta and repeats, tihai, pickup, shorthand), open **`examples/full-sample.json`** and **`examples/full-sample.xml`**: one bandish, written in both formats, with a comment on each feature in the XML. Every field, attribute and accepted spelling is in **[`docs/INPUT_FORMATS.md`](docs/INPUT_FORMATS.md)**, including the taal names, the swar spellings, the XML tags, and the Label Studio attributes the engine reads (`swar_type`, `variant`, `octave`, `matra_number`, `matra_fraction`, `lyric_applies_to_swar_id`, `modifies_swar_id`, ...).
+
+Convert between them:
+
+```bash
+npx tsx cli/bandish2xml.ts in.json out.xml          # bandish JSON or Label Studio export -> swartaal XML
+npx tsx cli/ls2bandish.ts out.json "<title>" page1.json page2.json   # Label Studio export(s) -> bandish JSON
 ```
 
 - `docs/ARCHITECTURE.md` covers the design: what is taken from VexFlow, and what follows the printed books.
@@ -55,6 +74,8 @@ JSON / XML ─► normalize + lower (Builder) ─► per row: swar Voice + lyric
 See `examples/` for five pages transcribed from the Raag Bodh Praveshika scans.
 
 ## From Label Studio annotations
+
+A raw export renders directly: `npm run render -- export.json out --png`. The converter below is only needed to inspect or edit the bandish JSON the engine builds from it, or to join several pages. Attribute reference: [`docs/INPUT_FORMATS.md`](docs/INPUT_FORMATS.md#3-label-studio-export).
 
 ```bash
 npx tsx cli/ls2bandish.ts examples/labelstudio/bhairav-geet1.json "राग भैरव — गीत १" p05_…_labelstudio.json p06_…_labelstudio.json

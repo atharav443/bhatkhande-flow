@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hindustani-composition version="1">
+  <metadata>
+    <title>नमूना बंदिश: सभी सुविधाएँ</title>
+    <raag>Sample</raag>
+    <laya>madhya</laya>
+    <thaat>Kalyan</thaat>
+    <composer>Sample</composer>
+    <label>Sample 1</label>
+    <tempo>90</tempo>
+    <taal name="teentaal"/>
+    <text>कान्हा रे तू आ जा मेरे अंगना रे
+बजे मुरली सुन आ</text>
+  </metadata>
+
+  <!-- Pickup: the first line starts at matra 9, so it sits right-aligned on the grid. -->
+  <section name="स्थायी" start-matra="9">
+    <line number="1">
+      <!-- octave -1 = mandra: dot below the swar -->
+      <matra index="9">
+        <swar octave="-1">नी</swar>
+        <lyric>का</lyric>
+      </matra>
+      <!-- id: lets a span refer to this event (see the spans list at the end) -->
+      <matra index="10">
+        <swar id="m1">रे</swar>
+        <lyric>न्हा</lyric>
+      </matra>
+      <matra index="11">
+        <swar>ग</swar>
+        <lyric>रे</lyric>
+      </matra>
+      <!-- tivra ma: stroke above -->
+      <matra index="12">
+        <swar tivra="true">म</swar>
+        <lyric>तू</lyric>
+      </matra>
+      <matra index="13">
+        <swar id="m2">प</swar>
+        <lyric>आ</lyric>
+      </matra>
+      <matra index="14">
+        <swar>ग</swar>
+        <lyric>जा</lyric>
+      </matra>
+      <!-- two events, no durations: they share the matra equally (1/2 each) -->
+      <matra index="15">
+        <swar>रे</swar>
+        <lyric>मे</lyric>
+        <swar>सा</swar>
+        <lyric>रे</lyric>
+      </matra>
+      <!-- octave 1 = taar: dot above the swar -->
+      <matra index="16">
+        <swar octave="1">सा</swar>
+        <lyric>ऽ</lyric>
+      </matra>
+    </line>
+    <line number="2">
+      <!-- duration 2: held for two matras -->
+      <matra index="1">
+        <swar duration="2">सा</swar>
+        <lyric>अं</lyric>
+      </matra>
+      <!-- empty matra: the held swar is carried into it (no events allowed here) -->
+      <matra index="2"/>
+      <!-- explicit durations -->
+      <matra index="3">
+        <swar duration="1/2">ग</swar>
+        <lyric>ग</lyric>
+        <swar tivra="true" duration="1/2">म</swar>
+        <lyric>ना</lyric>
+      </matra>
+      <!-- extend: held swar, printed as a dash -->
+      <matra index="4">
+        <extend/>
+        <lyric>ऽ</lyric>
+      </matra>
+      <!-- three events, no durations: 1/3 each, grouped by a curve -->
+      <matra index="5">
+        <swar tivra="true">म</swar>
+        <lyric>रे</lyric>
+        <swar>ग</swar>
+        <lyric>ऽ</lyric>
+        <swar>रे</swar>
+        <lyric>ऽ</lyric>
+      </matra>
+      <!-- kan: grace note above its swar -->
+      <matra index="6">
+        <swar>ध
+          <kan>नी</kan>
+        </swar>
+        <lyric>सु</lyric>
+      </matra>
+      <!-- kan inside kan (two levels is the limit) -->
+      <matra index="7">
+        <swar>प
+          <kan komal="true">ध
+            <kan tivra="true">म</kan>
+          </kan>
+        </swar>
+        <lyric>न</lyric>
+      </matra>
+      <!-- khatka: swar printed in parentheses -->
+      <matra index="8">
+        <swar khatka="true">ग</swar>
+        <lyric>ना</lyric>
+      </matra>
+      <!-- komal: bar under the swar -->
+      <matra index="9">
+        <swar komal="true">रे</swar>
+        <lyric>ब</lyric>
+      </matra>
+      <matra index="10">
+        <swar komal="true">ध</swar>
+        <lyric>सो</lyric>
+      </matra>
+      <matra index="11">
+        <swar komal="true">नी</swar>
+        <lyric>हे</lyric>
+      </matra>
+      <matra index="12">
+        <swar komal="true">ग</swar>
+        <lyric>री</lyric>
+      </matra>
+      <!-- meend start -->
+      <matra index="13">
+        <swar meend="start">ग</swar>
+        <lyric>सु</lyric>
+      </matra>
+      <matra index="14">
+        <swar tivra="true">म</swar>
+        <lyric>ऽ</lyric>
+      </matra>
+      <!-- meend end: arc from matra 13 to here -->
+      <matra index="15">
+        <swar meend="end">प</swar>
+        <lyric>ऽ</lyric>
+      </matra>
+      <!-- rest: drawn as an empty slot (no printed rest sign in Bhatkhande notation) -->
+      <matra index="16">
+        <rest/>
+      </matra>
+    </line>
+  </section>
+
+  <!-- Alternate endings and a repeat. -->
+  <section name="अन्तरा" start-matra="1">
+    <line number="3" repeat-start="true">
+      <!-- repeat sign before this matra: line repeatStart -->
+      <matra index="1">
+        <swar>ग</swar>
+        <lyric>ब</lyric>
+      </matra>
+      <matra index="2">
+        <swar>म</swar>
+        <lyric>ज</lyric>
+      </matra>
+      <matra index="3">
+        <swar>प</swar>
+        <lyric>ऽ</lyric>
+      </matra>
+      <matra index="4">
+        <swar>ध</swar>
+        <lyric>रे</lyric>
+      </matra>
+      <matra index="5">
+        <swar>नी</swar>
+        <lyric>मु</lyric>
+      </matra>
+      <!-- swar text 'सां' = taar (anusvara) -->
+      <matra index="6">
+        <swar>सां</swar>
+        <lyric>र</lyric>
+      </matra>
+      <matra index="7">
+        <swar>नी</swar>
+        <lyric>ली</lyric>
+      </matra>
+      <matra index="8">
+        <swar>ध</swar>
+        <lyric>ऽ</lyric>
+      </matra>
+      <matra index="9">
+        <swar>प</swar>
+        <lyric>सु</lyric>
+      </matra>
+      <matra index="10">
+        <swar tivra="true">म</swar>
+        <lyric>न</lyric>
+      </matra>
+      <matra index="11">
+        <swar>ग</swar>
+        <lyric>ऽ</lyric>
+      </matra>
+      <matra index="12">
+        <swar>रे</swar>
+        <lyric>आ</lyric>
+      </matra>
+      <!-- ending 1 starts: matras with volta 1 share one bracket -->
+      <matra index="13" volta="1">
+        <swar>ग</swar>
+        <lyric>सा</lyric>
+      </matra>
+      <matra index="14" volta="1">
+        <swar>रे</swar>
+        <lyric>जा</lyric>
+      </matra>
+      <matra index="15" volta="1">
+        <swar>सा</swar>
+        <lyric>ऽ</lyric>
+      </matra>
+      <!-- last matra of ending 1: repeat sign after it -->
+      <matra index="16" volta="1" repeat-after="true">
+        <extend/>
+        <lyric>ऽ</lyric>
+      </matra>
+      <!-- ending 2 rewinds to matra 13 and sits under ending 1 -->
+      <matra index="13" volta="2">
+        <swar>ग</swar>
+        <lyric>सा</lyric>
+      </matra>
+      <matra index="14" volta="2">
+        <swar>म</swar>
+        <lyric>म</lyric>
+      </matra>
+      <matra index="15" volta="2">
+        <swar>प</swar>
+        <lyric>स</lyric>
+      </matra>
+      <matra index="16" volta="2">
+        <swar>सां</swar>
+        <lyric>ऽ</lyric>
+      </matra>
+    </line>
+  </section>
+
+  <!-- Tihai: a phrase three times. The last note must land on sam (matra 1). -->
+  <section name="तिहाई" start-matra="9">
+    <line number="4">
+      <tihai repeat="3" unit="1" lands-on="sam" label="तिहाई">
+        <swar>ग</swar>
+        <swar>रे</swar>
+        <swar>सा</swar>
+      </tihai>
+    </line>
+  </section>
+
+  <!-- Shorthand strings, and a section without lyrics. -->
+  <section name="स्वरमालिका" start-matra="1">
+    <line number="5">
+      <!-- string shorthand (JSON). N. = mandra ni -->
+      <matra index="1">
+        <swar>N.</swar>
+      </matra>
+      <matra index="2">
+        <swar>S</swar>
+      </matra>
+      <matra index="3">
+        <swar>R</swar>
+      </matra>
+      <matra index="4">
+        <swar>G</swar>
+      </matra>
+      <!-- m = tivra ma -->
+      <matra index="5">
+        <swar>m</swar>
+      </matra>
+      <matra index="6">
+        <swar>P</swar>
+      </matra>
+      <matra index="7">
+        <swar>D</swar>
+      </matra>
+      <matra index="8">
+        <swar>N</swar>
+      </matra>
+      <!-- S' = taar sa -->
+      <matra index="9">
+        <swar>S'</swar>
+      </matra>
+      <matra index="10">
+        <swar>N</swar>
+      </matra>
+      <matra index="11">
+        <swar>D</swar>
+      </matra>
+      <matra index="12">
+        <swar>P</swar>
+      </matra>
+      <matra index="13">
+        <swar>m</swar>
+      </matra>
+      <matra index="14">
+        <swar>G</swar>
+        <swar>R</swar>
+      </matra>
+      <!-- '-' = held swar (extend) -->
+      <matra index="15">
+        <swar>S</swar>
+        <extend/>
+      </matra>
+      <!-- ',' = rest -->
+      <matra index="16">
+        <rest/>
+      </matra>
+    </line>
+  </section>
+
+  <!-- a meend made from two event ids, instead of meend start/end on the swars -->
+  <span type="meend" from="m1" to="m2"/>
+</hindustani-composition>

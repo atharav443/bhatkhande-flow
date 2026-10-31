@@ -1,0 +1,126 @@
+{
+  "version": 1,
+  "metadata": {
+    "title": "नमूना बंदिश: सभी सुविधाएँ",
+    "raag": "Sample",
+    "taal": "teentaal",
+    "laya": "madhya",
+    "thaat": "Kalyan",
+    "composer": "Sample",
+    "label": "Sample 1",
+    "tempo": 90,
+    "text": [
+      "कान्हा रे तू आ जा मेरे अंगना रे",
+      "बजे मुरली सुन आ"
+    ]
+  },
+  "sections": [
+    {
+      "name": "स्थायी", "startMatra": 9,
+      "lines": [
+        {
+          "number": 1,
+          "matras": [
+            {"index": 9, "events": [{"swar": "नी", "octave": -1, "lyric": "का"}]},
+            {"index": 10, "events": [{"swar": "रे", "id": "m1", "lyric": "न्हा"}]},
+            {"index": 11, "events": [{"swar": "ग", "lyric": "रे"}]},
+            {"index": 12, "events": [{"swar": "म", "tivra": true, "lyric": "तू"}]},
+            {"index": 13, "events": [{"swar": "प", "id": "m2", "lyric": "आ"}]},
+            {"index": 14, "events": [{"swar": "ग", "lyric": "जा"}]},
+            {"index": 15, "events": [{"swar": "रे", "lyric": "मे"}, {"swar": "सा", "lyric": "रे"}]},
+            {"index": 16, "events": [{"swar": "सा", "octave": 1, "lyric": "ऽ"}]}
+          ]
+        },
+        {
+          "number": 2,
+          "matras": [
+            {"index": 1, "events": [{"swar": "सा", "duration": 2, "lyric": "अं"}]},
+            {"index": 2, "events": []},
+            {"index": 3, "events": [{"swar": "ग", "duration": "1/2", "lyric": "ग"}, {"swar": "म", "tivra": true, "duration": "1/2", "lyric": "ना"}]},
+            {"index": 4, "events": [{"type": "extend", "lyric": "ऽ"}]},
+            {"index": 5, "events": [{"swar": "म", "tivra": true, "lyric": "रे"}, {"swar": "ग", "lyric": "ऽ"}, {"swar": "रे", "lyric": "ऽ"}]},
+            {"index": 6, "events": [{"swar": "ध", "kan": [{"swar": "नी"}], "lyric": "सु"}]},
+            {"index": 7, "events": [{"swar": "प", "kan": [{"swar": "ध", "komal": true, "kan": [{"swar": "म", "tivra": true}]}], "lyric": "न"}]},
+            {"index": 8, "events": [{"swar": "ग", "khatka": true, "lyric": "ना"}]},
+            {"index": 9, "events": [{"swar": "रे", "komal": true, "lyric": "ब"}]},
+            {"index": 10, "events": [{"swar": "ध", "komal": true, "lyric": "सो"}]},
+            {"index": 11, "events": [{"swar": "नी", "komal": true, "lyric": "हे"}]},
+            {"index": 12, "events": [{"swar": "ग", "komal": true, "lyric": "री"}]},
+            {"index": 13, "events": [{"swar": "ग", "meend": "start", "lyric": "सु"}]},
+            {"index": 14, "events": [{"swar": "म", "tivra": true, "lyric": "ऽ"}]},
+            {"index": 15, "events": [{"swar": "प", "meend": "end", "lyric": "ऽ"}]},
+            {"index": 16, "events": [{"type": "rest"}]}
+          ]
+        }
+      ]
+    },
+    {
+      "name": "अन्तरा", "startMatra": 1,
+      "lines": [
+        {
+          "number": 3, "repeatStart": true,
+          "matras": [
+            {"index": 1, "events": [{"swar": "ग", "lyric": "ब"}]},
+            {"index": 2, "events": [{"swar": "म", "lyric": "ज"}]},
+            {"index": 3, "events": [{"swar": "प", "lyric": "ऽ"}]},
+            {"index": 4, "events": [{"swar": "ध", "lyric": "रे"}]},
+            {"index": 5, "events": [{"swar": "नी", "lyric": "मु"}]},
+            {"index": 6, "events": [{"swar": "सां", "lyric": "र"}]},
+            {"index": 7, "events": [{"swar": "नी", "lyric": "ली"}]},
+            {"index": 8, "events": [{"swar": "ध", "lyric": "ऽ"}]},
+            {"index": 9, "events": [{"swar": "प", "lyric": "सु"}]},
+            {"index": 10, "events": [{"swar": "म", "tivra": true, "lyric": "न"}]},
+            {"index": 11, "events": [{"swar": "ग", "lyric": "ऽ"}]},
+            {"index": 12, "events": [{"swar": "रे", "lyric": "आ"}]},
+            {"index": 13, "events": [{"swar": "ग", "lyric": "सा"}], "volta": "1"},
+            {"index": 14, "events": [{"swar": "रे", "lyric": "जा"}], "volta": "1"},
+            {"index": 15, "events": [{"swar": "सा", "lyric": "ऽ"}], "volta": "1"},
+            {"index": 16, "events": [{"type": "extend", "lyric": "ऽ"}], "volta": "1", "repeatAfter": true},
+            {"index": 13, "events": [{"swar": "ग", "lyric": "सा"}], "volta": "2"},
+            {"index": 14, "events": [{"swar": "म", "lyric": "म"}], "volta": "2"},
+            {"index": 15, "events": [{"swar": "प", "lyric": "स"}], "volta": "2"},
+            {"index": 16, "events": [{"swar": "सां", "lyric": "ऽ"}], "volta": "2"}
+          ]
+        }
+      ]
+    },
+    {
+      "name": "तिहाई", "startMatra": 9,
+      "lines": [
+        {
+          "number": 4,
+          "matras": [
+            {"tihai": {"phrase": ["ग", "रे", "सा"], "unit": "1", "repeat": 3, "landsOn": "sam", "label": "तिहाई"}}
+          ]
+        }
+      ]
+    },
+    {
+      "name": "स्वरमालिका", "startMatra": 1,
+      "lines": [
+        {
+          "number": 5,
+          "matras": [
+            {"index": 1, "events": ["N."]},
+            {"index": 2, "events": ["S"]},
+            {"index": 3, "events": ["R"]},
+            {"index": 4, "events": ["G"]},
+            {"index": 5, "events": ["m"]},
+            {"index": 6, "events": ["P"]},
+            {"index": 7, "events": ["D"]},
+            {"index": 8, "events": ["N"]},
+            {"index": 9, "events": ["S'"]},
+            {"index": 10, "events": ["N"]},
+            {"index": 11, "events": ["D"]},
+            {"index": 12, "events": ["P"]},
+            {"index": 13, "events": ["m"]},
+            {"index": 14, "events": ["G", "R"]},
+            {"index": 15, "events": ["S", "-"]},
+            {"index": 16, "events": [","]}
+          ]
+        }
+      ]
+    }
+  ],
+  "spans": [{"type": "meend", "from": "m1", "to": "m2"}]
+}

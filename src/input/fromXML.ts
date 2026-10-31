@@ -50,7 +50,11 @@ export function fromXML(src: string): { model: BandishModel; diagnostics: Diagno
   const meta: any = {};
   if (md) {
     for (const c of md.children) {
-      if (c.name === 'tala' || c.name === 'taal') meta.taal = { ...c.attrs };
+      if (c.name === 'tala' || c.name === 'taal') {
+        // custom taal in XML: vibhags="3,3,2" markers="X,2,0" (comma or space separated)
+        const list = (v?: string) => (v === undefined ? undefined : v.split(/[\s,]+/).filter(Boolean));
+        meta.taal = { ...c.attrs, ...(c.attrs.vibhags !== undefined ? { vibhags: list(c.attrs.vibhags) } : {}), ...(c.attrs.markers !== undefined ? { markers: list(c.attrs.markers) } : {}) };
+      }
       else meta[c.name] = c.text.trim();
     }
   }
