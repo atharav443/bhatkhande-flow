@@ -1,5 +1,5 @@
-import { Tables } from '../core/tables';
-import type { TickContext } from './tickcontext';
+import { Tables } from '../core/tables.js';
+import type { TickContext } from './tickcontext.js';
 
 /**
  * NEW (no VexFlow equivalent): the TickContexts inside one matra.

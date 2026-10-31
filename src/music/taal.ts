@@ -1,4 +1,4 @@
-import type { Diagnostic, TaalSpec } from '../input/types';
+import type { Diagnostic, TaalSpec } from '../input/types.js';
 
 /**
  * The taal is the layout model of Bhatkhande notation - what the time signature + barlines are in VexFlow.

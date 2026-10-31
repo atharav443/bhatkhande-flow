@@ -1,7 +1,7 @@
-import { Fraction } from '../core/fraction';
-import { Tables } from '../core/tables';
-import { degreeText, type Degree } from '../music/swar';
-import { Note } from './note';
+import { Fraction } from '../core/fraction.js';
+import { Tables } from '../core/tables.js';
+import { degreeText, type Degree } from '../music/swar.js';
+import { Note } from './note.js';
 
 export interface SwarStruct {
   degree: Degree;

@@ -1,9 +1,9 @@
-import { Element } from '../core/element';
-import { Fraction, ZERO } from '../core/fraction';
-import { RuntimeError } from '../core/util';
-import type { Tickable } from './tickable';
-import type { TaalStave } from '../stave/taalstave';
-import { Note } from './note';
+import { Element } from '../core/element.js';
+import { Fraction, ZERO } from '../core/fraction.js';
+import { RuntimeError } from '../core/util.js';
+import type { Tickable } from './tickable.js';
+import type { TaalStave } from '../stave/taalstave.js';
+import { Note } from './note.js';
 
 export enum VoiceMode {
   STRICT = 1,

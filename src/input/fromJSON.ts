@@ -1,5 +1,5 @@
-import { Fraction, ONE } from '../core/fraction';
-import { canBeKomal, canBeTivra, parseOctave, parseSwarText } from '../music/swar';
+import { Fraction, ONE } from '../core/fraction.js';
+import { canBeKomal, canBeTivra, parseOctave, parseSwarText } from '../music/swar.js';
 import type {
   BandishModel,
   Diagnostic,
@@ -11,7 +11,7 @@ import type {
   SpanModel,
   SwarEvent,
   TaalSpec,
-} from './types';
+} from './types.js';
 
 /**
  * Normalises LOOSE input (our JSON, swartaal-style JSON, or the object produced by fromXML)

@@ -1,6 +1,6 @@
-import { Element } from '../core/element';
-import { Tables } from '../core/tables';
-import type { Note } from '../notes/note';
+import { Element } from '../core/element.js';
+import { Tables } from '../core/tables.js';
+import type { Note } from '../notes/note.js';
 
 /**
  * The ⌣ under the events of one matra when it holds more than one (VexFlow `Curve`/beam-group idea,

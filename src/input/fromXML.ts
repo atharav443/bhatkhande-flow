@@ -1,6 +1,6 @@
-import { parseXML, type XNode } from './xml';
-import { normalizeBandish } from './fromJSON';
-import type { BandishModel, Diagnostic } from './types';
+import { parseXML, type XNode } from './xml.js';
+import { normalizeBandish } from './fromJSON.js';
+import type { BandishModel, Diagnostic } from './types.js';
 
 /** Reads the swartaal `<hindustani-composition>` format (plus optional extensions: <rest/>, <extend/>, kan=, meend=, khatka=, <span/>). */
 const kids = (n: XNode, name: string) => n.children.filter((c) => c.name === name);

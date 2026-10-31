@@ -1,6 +1,6 @@
-import type { Script } from '../music/swar';
-import type { FontProvider, FontRole } from '../font/provider';
-import { defined } from './util';
+import type { Script } from '../music/swar.js';
+import type { FontProvider, FontRole } from '../font/provider.js';
+import { defined } from './util.js';
 
 /**
  * House style + metric tables (VexFlow `Tables` + music-font metrics).

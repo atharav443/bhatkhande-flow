@@ -3,8 +3,36 @@
   "version": "1.0.0",
   "description": "VexFlow-style rendering engine for Bhatkhande (Hindustani) notation. Input: bandish JSON/XML. Output: SVG + dataset labels.",
   "type": "module",
-  "main": "src/index.ts",
+  "main": "./dist/node.js",
+  "types": "./dist/node.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/node.d.ts",
+      "default": "./dist/node.js"
+    },
+    "./browser": {
+      "types": "./dist/browser.d.ts",
+      "default": "./dist/browser.js"
+    },
+    "./core": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "docs/INPUT_FORMATS.md",
+    "README.md",
+    "LICENSE"
+  ],
+  "sideEffects": false,
+  "engines": {
+    "node": ">=18"
+  },
   "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "prepare": "npm run build",
     "typecheck": "tsc --noEmit",
     "test": "tsx --test test/*.test.ts",
     "render": "tsx cli/render.ts",
@@ -29,5 +57,19 @@
     "prettier": "^3.9.10",
     "tsx": "^4.23.15",
     "typescript": "^7.0.2"
+  },
+  "keywords": [
+    "bhatkhande",
+    "hindustani",
+    "notation",
+    "music",
+    "svg",
+    "omr",
+    "dataset",
+    "vexflow"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/atharav443/bhatkhande-flow.git"
   }
 }

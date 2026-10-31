@@ -1,4 +1,4 @@
-import type { Element } from './element';
+import type { Element } from './element.js';
 
 /** Index of elements by id / type / class (VexFlow `Registry`). Enable a default registry to track every element created. */
 export class Registry {

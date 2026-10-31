@@ -1,9 +1,9 @@
-import { ZERO, type Fraction } from '../core/fraction';
-import { RuntimeError } from '../core/util';
-import { ModifierContext } from '../modifiers/modifiercontext';
-import type { Voice } from '../notes/voice';
-import { TickContext } from './tickcontext';
-import { MatraContext } from './matracontext';
+import { ZERO, type Fraction } from '../core/fraction.js';
+import { RuntimeError } from '../core/util.js';
+import { ModifierContext } from '../modifiers/modifiercontext.js';
+import type { Voice } from '../notes/voice.js';
+import { TickContext } from './tickcontext.js';
+import { MatraContext } from './matracontext.js';
 
 /**
  * VexFlow's `Formatter`, kept where Bhatkhande agrees and changed where it does not:

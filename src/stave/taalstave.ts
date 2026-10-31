@@ -1,17 +1,17 @@
-import { Element } from '../core/element';
-import { Glyph } from '../core/glyph';
-import { Tables } from '../core/tables';
-import { RuntimeError } from '../core/util';
-import { DEGREES, degreeText } from '../music/swar';
-import { Formatter } from '../formatting/formatter';
-import { KanGroup } from '../modifiers/kangroup';
-import { Note } from '../notes/note';
-import type { Voice } from '../notes/voice';
-import { LineEndBar, VibhagLine } from './barlines';
-import type { ColumnGrid } from './columngrid';
-import { TaalMarker } from './taalmarker';
-import { RepeatBar, RepeatType } from './repeatbar';
-import { Volta, VoltaType } from './volta';
+import { Element } from '../core/element.js';
+import { Glyph } from '../core/glyph.js';
+import { Tables } from '../core/tables.js';
+import { RuntimeError } from '../core/util.js';
+import { DEGREES, degreeText } from '../music/swar.js';
+import { Formatter } from '../formatting/formatter.js';
+import { KanGroup } from '../modifiers/kangroup.js';
+import { Note } from '../notes/note.js';
+import type { Voice } from '../notes/voice.js';
+import { LineEndBar, VibhagLine } from './barlines.js';
+import type { ColumnGrid } from './columngrid.js';
+import { TaalMarker } from './taalmarker.js';
+import { RepeatBar, RepeatType } from './repeatbar.js';
+import { Volta, VoltaType } from './volta.js';
 
 export type Lane = 'volta' | 'meend' | 'tihai' | 'kan' | 'swar' | 'lyric' | 'marker';
 

@@ -1,23 +1,23 @@
-import { Fraction } from './core/fraction';
-import { Tables } from './core/tables';
-import type { Diagnostic, KanNote as KanModel } from './input/types';
-import type { Lowered, LMatra, Slot } from './input/lower';
-import { KanGroup } from './modifiers/kangroup';
-import { KhatkaBracket } from './modifiers/khatkabracket';
-import { KomalMark } from './modifiers/komalmark';
-import { ModifierPosition } from './modifiers/modifier';
-import { OctaveDot } from './modifiers/octavedot';
-import { TivraMark } from './modifiers/tivramark';
-import { GhostNote } from './notes/ghostnote';
-import { LyricNote, LyricRest } from './notes/lyricnote';
-import type { Note } from './notes/note';
-import { KanNote, SwarNote, SwarRest } from './notes/swarnote';
-import { Voice, VoiceMode } from './notes/voice';
-import { GroupingCurve } from './spanners/groupingcurve';
-import { Meend } from './spanners/meend';
-import { TihaiBracket } from './spanners/tihai';
-import { Page, type PageSection } from './stave/page';
-import { TaalStave, type StaveMatra } from './stave/taalstave';
+import { Fraction } from './core/fraction.js';
+import { Tables } from './core/tables.js';
+import type { Diagnostic, KanNote as KanModel } from './input/types.js';
+import type { Lowered, LMatra, Slot } from './input/lower.js';
+import { KanGroup } from './modifiers/kangroup.js';
+import { KhatkaBracket } from './modifiers/khatkabracket.js';
+import { KomalMark } from './modifiers/komalmark.js';
+import { ModifierPosition } from './modifiers/modifier.js';
+import { OctaveDot } from './modifiers/octavedot.js';
+import { TivraMark } from './modifiers/tivramark.js';
+import { GhostNote } from './notes/ghostnote.js';
+import { LyricNote, LyricRest } from './notes/lyricnote.js';
+import type { Note } from './notes/note.js';
+import { KanNote, SwarNote, SwarRest } from './notes/swarnote.js';
+import { Voice, VoiceMode } from './notes/voice.js';
+import { GroupingCurve } from './spanners/groupingcurve.js';
+import { Meend } from './spanners/meend.js';
+import { TihaiBracket } from './spanners/tihai.js';
+import { Page, type PageSection } from './stave/page.js';
+import { TaalStave, type StaveMatra } from './stave/taalstave.js';
 
 export interface BuildOptions {
   /** write ऽ under every swar slot that has no syllable, when the section has lyrics (book convention) */

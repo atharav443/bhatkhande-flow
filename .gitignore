@@ -21,3 +21,5 @@ __pycache__/
 *.swp
 .env
 .env.*
+dist/
+*.tgz

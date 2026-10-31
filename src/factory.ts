@@ -1,15 +1,15 @@
-import { Element } from './core/element';
-import { createStyle, Tables, type BhatkhandeStyle } from './core/tables';
-import type { FontProvider } from './font/provider';
-import { fromXML } from './input/fromXML';
-import { normalizeBandish } from './input/fromJSON';
-import { isLabelStudio, labelStudioToBandish } from './input/fromLabelStudio';
-import { lowerBandish } from './input/lower';
-import type { Diagnostic } from './input/types';
-import { buildPage, type BuildOptions } from './builder';
-import { SVGContext } from './render/svgcontext';
-import { collectLabels, type Label } from './render/labels';
-import type { Page } from './stave/page';
+import { Element } from './core/element.js';
+import { createStyle, Tables, type BhatkhandeStyle } from './core/tables.js';
+import type { FontProvider } from './font/provider.js';
+import { fromXML } from './input/fromXML.js';
+import { normalizeBandish } from './input/fromJSON.js';
+import { isLabelStudio, labelStudioToBandish } from './input/fromLabelStudio.js';
+import { lowerBandish } from './input/lower.js';
+import type { Diagnostic } from './input/types.js';
+import { buildPage, type BuildOptions } from './builder.js';
+import { SVGContext } from './render/svgcontext.js';
+import { collectLabels, type Label } from './render/labels.js';
+import type { Page } from './stave/page.js';
 
 export interface FactoryOptions {
   fonts: FontProvider;

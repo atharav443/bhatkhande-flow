@@ -1,5 +1,5 @@
-import type { Fraction } from '../core/fraction';
-import type { Tickable } from '../notes/tickable';
+import type { Fraction } from '../core/fraction.js';
+import type { Tickable } from '../notes/tickable.js';
 
 /**
  * Everything that starts at one onset, across voices (VexFlow `TickContext`): the swar and the syllable sung on it.

@@ -1,6 +1,6 @@
-import { Tables } from '../core/tables';
-import { Modifier, ModifierPosition } from './modifier';
-import type { ModifierContextState } from './modifiercontext';
+import { Tables } from '../core/tables.js';
+import { Modifier, ModifierPosition } from './modifier.js';
+import type { ModifierContextState } from './modifiercontext.js';
 
 /** Tivra Ma: a short vertical stroke ABOVE the swar. Category `tivra_mark`. */
 export class TivraMark extends Modifier {

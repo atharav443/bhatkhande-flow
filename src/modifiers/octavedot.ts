@@ -1,7 +1,7 @@
-import { Tables } from '../core/tables';
-import type { Shape } from '../font/provider';
-import { Modifier, ModifierPosition } from './modifier';
-import type { ModifierContextState } from './modifiercontext';
+import { Tables } from '../core/tables.js';
+import type { Shape } from '../font/provider.js';
+import { Modifier, ModifierPosition } from './modifier.js';
+import type { ModifierContextState } from './modifiercontext.js';
 
 /**
  * Where the printed taar dot of सा sits: over the stem of the ा matra, at the right end of the glyph, not over the middle of the ink box.

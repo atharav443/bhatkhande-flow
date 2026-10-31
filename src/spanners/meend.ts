@@ -1,7 +1,7 @@
-import { Element } from '../core/element';
-import { Tables } from '../core/tables';
-import type { Note } from '../notes/note';
-import type { TaalStave } from '../stave/taalstave';
+import { Element } from '../core/element.js';
+import { Tables } from '../core/tables.js';
+import type { Note } from '../notes/note.js';
+import type { TaalStave } from '../stave/taalstave.js';
 
 /**
  * Meend: an arc ABOVE the swars from one note to another (VexFlow `Curve`). Like VexFlow's partial curves,

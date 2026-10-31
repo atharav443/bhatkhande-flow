@@ -1,6 +1,6 @@
-import { Fraction, ONE, ZERO } from '../core/fraction';
-import { expectedPos, isVibhagStart, resolveTaal, vibhagIndex, type TaalDef } from '../music/taal';
-import type { BandishModel, Diagnostic, EventModel, MetadataModel, SwarEvent } from './types';
+import { Fraction, ONE, ZERO } from '../core/fraction.js';
+import { expectedPos, isVibhagStart, resolveTaal, vibhagIndex, type TaalDef } from '../music/taal.js';
+import type { BandishModel, Diagnostic, EventModel, MetadataModel, SwarEvent } from './types.js';
 
 /**
  * LOWERING: authored events -> a grid the layout engine can reason about.

@@ -1,5 +1,5 @@
 import type * as fontkit from 'fontkit';
-import type { FontProvider, FontRole, Shape } from './provider';
+import type { FontProvider, FontRole, Shape } from './provider.js';
 
 /** Environment-free part of the fontkit provider: it only needs already-parsed fonts, so the same shaping code runs in Node and in the browser. */
 export type FKFont = fontkit.Font;

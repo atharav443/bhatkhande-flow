@@ -1,5 +1,5 @@
-import { Element } from '../core/element';
-import { Tables } from '../core/tables';
+import { Element } from '../core/element.js';
+import { Tables } from '../core/tables.js';
 
 export enum RepeatType {
   BEGIN = 1,

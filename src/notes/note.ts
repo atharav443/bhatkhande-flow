@@ -1,10 +1,10 @@
-import { BoundingBox } from '../core/boundingbox';
-import { Glyph } from '../core/glyph';
-import { defined } from '../core/util';
-import { Tickable } from './tickable';
-import type { Fraction } from '../core/fraction';
-import type { FontRole } from '../font/provider';
-import type { TaalStave, Lane } from '../stave/taalstave';
+import { BoundingBox } from '../core/boundingbox.js';
+import { Glyph } from '../core/glyph.js';
+import { defined } from '../core/util.js';
+import { Tickable } from './tickable.js';
+import type { Fraction } from '../core/fraction.js';
+import type { FontRole } from '../font/provider.js';
+import type { TaalStave, Lane } from '../stave/taalstave.js';
 
 /**
  * A tickable that shows a glyph on one of the stave's lanes (VexFlow `Note`).

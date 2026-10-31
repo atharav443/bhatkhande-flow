@@ -1,11 +1,11 @@
-import { Element } from '../core/element';
-import { Tables } from '../core/tables';
-import type { TaalDef } from '../music/taal';
-import { ColumnGrid } from './columngrid';
-import { TaalStave } from './taalstave';
-import { SectionHeading, TextLine, Title } from './text';
-import { Meend } from '../spanners/meend';
-import { TihaiBracket } from '../spanners/tihai';
+import { Element } from '../core/element.js';
+import { Tables } from '../core/tables.js';
+import type { TaalDef } from '../music/taal.js';
+import { ColumnGrid } from './columngrid.js';
+import { TaalStave } from './taalstave.js';
+import { SectionHeading, TextLine, Title } from './text.js';
+import { Meend } from '../spanners/meend.js';
+import { TihaiBracket } from '../spanners/tihai.js';
 
 export interface PageSection {
   heading?: string;

@@ -1,6 +1,6 @@
-import type { Fraction } from '../core/fraction';
-import { Tables } from '../core/tables';
-import { Note } from './note';
+import type { Fraction } from '../core/fraction.js';
+import { Tables } from '../core/tables.js';
+import { Note } from './note.js';
 
 /**
  * A lyric syllable (VexFlow lyrics are TextNotes in their own Voice). It sits in the same TickContext as the swar

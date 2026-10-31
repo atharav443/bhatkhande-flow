@@ -1,5 +1,5 @@
-import type { Fraction } from '../core/fraction';
-import type { Degree } from '../music/swar';
+import type { Fraction } from '../core/fraction.js';
+import type { Degree } from '../music/swar.js';
 
 export type Level = 'error' | 'warn' | 'info';
 export interface Diagnostic {

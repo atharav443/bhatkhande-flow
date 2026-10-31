@@ -1,7 +1,7 @@
-import { BoundingBox } from './boundingbox';
-import { Registry } from './registry';
-import type { RenderContext } from '../render/rendercontext';
-import { defined } from './util';
+import { BoundingBox } from './boundingbox.js';
+import { Registry } from './registry.js';
+import type { RenderContext } from '../render/rendercontext.js';
+import { defined } from './util.js';
 
 /**
  * Base of everything drawable (VexFlow `Element`).

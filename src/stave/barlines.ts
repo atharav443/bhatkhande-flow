@@ -1,5 +1,5 @@
-import { Element } from '../core/element';
-import { Tables } from '../core/tables';
+import { Element } from '../core/element.js';
+import { Tables } from '../core/tables.js';
 
 /** Vertical line between vibhags. Spans the swar and lyric lines only (not the marker line). Category `vibhag_line`. */
 export class VibhagLine extends Element {

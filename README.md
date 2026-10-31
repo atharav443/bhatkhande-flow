@@ -8,6 +8,45 @@ npm test                                   # 20 tests: grid, conventions, label 
 npm run render -- examples/bhimpalasi-geet.json out --png
 ```
 
+## Use it as a library
+
+bhatkhande-flow is an ES module package with TypeScript types. Install it from GitHub (or from npm once it is published):
+
+```bash
+npm install github:atharav443/bhatkhande-flow     # builds dist/ on install
+```
+
+**Node** (fonts are bundled, nothing else to set up):
+
+```js
+import { readFileSync, writeFileSync } from 'node:fs';
+import { renderBandish, toYOLO } from 'bhatkhande-flow';
+
+const result = renderBandish(readFileSync('bandish.json', 'utf8')); // JSON, XML or a Label Studio export
+writeFileSync('bandish.svg', result.svg);
+writeFileSync('bandish.yolo.txt', toYOLO(result.labels, result.width, result.height));
+for (const d of result.diagnostics) console.log(d.level, d.code, d.message);
+```
+
+`renderBandish(input, { style, build })` takes the same options as the CLI: `style: { script: 'latin' }`, `build: { lyricCurves: false }`. It returns `svg`, `width`, `height`, `labels` (class, box, data for every drawn element) and `diagnostics`.
+
+**Browser** (with a bundler such as Vite or esbuild). Serve the four font files from `node_modules/@fontsource/*/files/` (see `scripts/build-web.mjs`) and pass their URLs:
+
+```js
+import { Factory, createBrowserFontProvider } from 'bhatkhande-flow/browser';
+
+const fonts = await createBrowserFontProvider({ tiroDeva, tiroLatin, notoReg, notoBold }); // font URLs
+const { svg } = new Factory({ fonts }).renderBandish(text);
+```
+
+| Import                    | What you get                                                                                              |
+| ------------------------- | --------------------------------------------------------------------------------------------------------- |
+| `bhatkhande-flow`         | Node: everything, plus `renderBandish()` and `createFontkitProvider()`                                    |
+| `bhatkhande-flow/browser` | Browser: everything, plus `createBrowserFontProvider()`, `createCanvasFontProvider()`, `toBandishInput()` |
+| `bhatkhande-flow/core`    | The engine with no font loading, for your own `FontProvider`                                              |
+
+The package is ESM only: use `import`, not `require`. `npm run build` writes `dist/`; `npm pack` shows exactly what would be published.
+
 ## What can I give it?
 
 Three input formats, all turned into one model before drawing. `npm run render -- <file> out --png` detects the format from the content.

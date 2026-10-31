@@ -1,7 +1,7 @@
-import { Element } from '../core/element';
-import { Glyph } from '../core/glyph';
-import { Tables } from '../core/tables';
-import type { FontRole } from '../font/provider';
+import { Element } from '../core/element.js';
+import { Glyph } from '../core/glyph.js';
+import { Tables } from '../core/tables.js';
+import type { FontRole } from '../font/provider.js';
 
 /** A line of page text positioned by its ink box (VexFlow `StaveText`/`TextNote` outside the music). */
 export class TextLine extends Element {

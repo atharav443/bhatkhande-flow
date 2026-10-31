@@ -1,4 +1,4 @@
-import { BoundingBox } from '../core/boundingbox';
+import { BoundingBox } from '../core/boundingbox.js';
 
 export interface GroupRecord {
   cls: string;

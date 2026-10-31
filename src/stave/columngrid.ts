@@ -1,4 +1,4 @@
-import type { TaalDef } from '../music/taal';
+import type { TaalDef } from '../music/taal.js';
 
 /**
  * The page-wide matra grid. Bhatkhande pages are TABLES: every matra column has the same width and every row

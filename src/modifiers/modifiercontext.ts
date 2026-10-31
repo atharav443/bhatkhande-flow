@@ -1,10 +1,10 @@
-import type { Modifier } from './modifier';
-import type { Tickable } from '../notes/tickable';
-import { KhatkaBracket } from './khatkabracket';
-import { KomalMark } from './komalmark';
-import { TivraMark } from './tivramark';
-import { OctaveDot } from './octavedot';
-import { KanGroup } from './kangroup';
+import type { Modifier } from './modifier.js';
+import type { Tickable } from '../notes/tickable.js';
+import { KhatkaBracket } from './khatkabracket.js';
+import { KomalMark } from './komalmark.js';
+import { TivraMark } from './tivramark.js';
+import { OctaveDot } from './octavedot.js';
+import { KanGroup } from './kangroup.js';
 
 export interface ModifierContextState {
   left_shift: number;

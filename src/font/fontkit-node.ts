@@ -1,7 +1,7 @@
 import { createRequire } from 'node:module';
 import * as fontkit from 'fontkit';
-import type { FontProvider } from './provider';
-import { createProviderFromFonts, type FKFont } from './fontkit-core';
+import type { FontProvider } from './provider.js';
+import { createProviderFromFonts, type FKFont } from './fontkit-core.js';
 
 const require = createRequire(import.meta.url);
 const file = (pkg: string, f: string) => require.resolve(`${pkg}/files/${f}`);

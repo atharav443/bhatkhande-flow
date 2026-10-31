@@ -5,3 +5,4 @@ web/fonts/
 web/examples/
 examples/
 package-lock.json
+dist/

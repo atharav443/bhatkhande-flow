@@ -1,7 +1,7 @@
-import { Element } from '../core/element';
-import { Glyph } from '../core/glyph';
-import { Tables } from '../core/tables';
-import { markerText } from '../music/taal';
+import { Element } from '../core/element.js';
+import { Glyph } from '../core/glyph.js';
+import { Tables } from '../core/tables.js';
+import { markerText } from '../music/taal.js';
 
 /** ×, ०, २, ३ … printed on the line BELOW the lyrics, under the first matra of each vibhag. Category `taal_marker`. */
 export class TaalMarker extends Element {

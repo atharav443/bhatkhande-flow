@@ -1,8 +1,8 @@
-import { Element } from '../core/element';
-import { Glyph } from '../core/glyph';
-import { Tables } from '../core/tables';
-import type { Note } from '../notes/note';
-import type { TaalStave } from '../stave/taalstave';
+import { Element } from '../core/element.js';
+import { Glyph } from '../core/glyph.js';
+import { Tables } from '../core/tables.js';
+import type { Note } from '../notes/note.js';
+import type { TaalStave } from '../stave/taalstave.js';
 
 /** Bracket with a caption over a tihai (VexFlow `Tuplet` bracket). Category `tihai_bracket`. */
 export class TihaiBracket extends Element {

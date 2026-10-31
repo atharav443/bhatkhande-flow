@@ -1,7 +1,7 @@
-import { BoundingBox } from './boundingbox';
-import { Tables } from './tables';
-import type { FontRole, Shape } from '../font/provider';
-import type { RenderContext } from '../render/rendercontext';
+import { BoundingBox } from './boundingbox.js';
+import { Tables } from './tables.js';
+import type { FontRole, Shape } from '../font/provider.js';
+import type { RenderContext } from '../render/rendercontext.js';
 
 /**
  * A shaped piece of text (VexFlow `Glyph`). Devanagari needs real OpenType shaping (matra reordering, conjuncts),

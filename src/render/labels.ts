@@ -1,4 +1,4 @@
-import type { RenderContext } from './rendercontext';
+import type { RenderContext } from './rendercontext.js';
 
 /** The BhatkhandeSet label taxonomy. Element categories with these names become labels. */
 export const LABEL_CLASSES = [

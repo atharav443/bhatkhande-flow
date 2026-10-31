@@ -1,10 +1,10 @@
-import { Element } from '../core/element';
-import { Fraction } from '../core/fraction';
-import { defined } from '../core/util';
-import type { Modifier } from '../modifiers/modifier';
-import type { ModifierContext } from '../modifiers/modifiercontext';
-import type { TickContext } from '../formatting/tickcontext';
-import type { Voice } from './voice';
+import { Element } from '../core/element.js';
+import { Fraction } from '../core/fraction.js';
+import { defined } from '../core/util.js';
+import type { Modifier } from '../modifiers/modifier.js';
+import type { ModifierContext } from '../modifiers/modifiercontext.js';
+import type { TickContext } from '../formatting/tickcontext.js';
+import type { Voice } from './voice.js';
 
 export interface TickableMetrics {
   /** total width the formatter must reserve: modLeft + notePx + modRight */

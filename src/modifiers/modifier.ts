@@ -1,8 +1,8 @@
-import { Element } from '../core/element';
-import { defined } from '../core/util';
-import type { Note } from '../notes/note';
-import type { Tickable } from '../notes/tickable';
-import type { ModifierContext } from './modifiercontext';
+import { Element } from '../core/element.js';
+import { defined } from '../core/util.js';
+import type { Note } from '../notes/note.js';
+import type { Tickable } from '../notes/tickable.js';
+import type { ModifierContext } from './modifiercontext.js';
 
 export enum ModifierPosition {
   LEFT = 1,

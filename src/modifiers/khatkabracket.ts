@@ -1,6 +1,6 @@
-import { Tables } from '../core/tables';
-import { Modifier, ModifierPosition } from './modifier';
-import type { ModifierContextState } from './modifiercontext';
+import { Tables } from '../core/tables.js';
+import { Modifier, ModifierPosition } from './modifier.js';
+import type { ModifierContextState } from './modifiercontext.js';
 
 /** One side of a khatka, printed as the swar in parentheses: (प). Category `khatka_bracket` (one label per side). */
 export class KhatkaBracket extends Modifier {

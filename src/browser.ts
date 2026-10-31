@@ -1,9 +1,9 @@
 import * as fontkit from 'fontkit';
-import type { FontProvider, FontRole, Shape } from './font/provider';
-import { createProviderFromFonts, type FKFont } from './font/fontkit-core';
-import { isLabelStudio, labelStudioToBandish } from './input/fromLabelStudio';
+import type { FontProvider, FontRole, Shape } from './font/provider.js';
+import { createProviderFromFonts, type FKFont } from './font/fontkit-core.js';
+import { isLabelStudio, labelStudioToBandish } from './input/fromLabelStudio.js';
 
-export * from './index';
+export * from './index.js';
 
 /**
  * Browser entry. Two interchangeable FontProviders (VexFlow keeps its font behind an interface the same way):

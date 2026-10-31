@@ -1,6 +1,6 @@
-import { Tables } from '../core/tables';
-import { Modifier, ModifierPosition } from './modifier';
-import type { ModifierContextState } from './modifiercontext';
+import { Tables } from '../core/tables.js';
+import { Modifier, ModifierPosition } from './modifier.js';
+import type { ModifierContextState } from './modifiercontext.js';
 
 /** Komal: a short bar UNDER the swar (only under that letter when it sits in a group). Category `komal_mark`. */
 export class KomalMark extends Modifier {

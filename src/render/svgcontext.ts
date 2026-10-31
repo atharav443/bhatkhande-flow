@@ -1,4 +1,4 @@
-import { RenderContext, pathToD } from './rendercontext';
+import { RenderContext, pathToD } from './rendercontext.js';
 
 const esc = (s: string) =>
   s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');

@@ -1,7 +1,7 @@
-import { Tables } from '../core/tables';
-import { Modifier, ModifierPosition } from './modifier';
-import { ModifierContext, type ModifierContextState } from './modifiercontext';
-import type { KanNote } from '../notes/swarnote';
+import { Tables } from '../core/tables.js';
+import { Modifier, ModifierPosition } from './modifier.js';
+import { ModifierContext, type ModifierContextState } from './modifiercontext.js';
+import type { KanNote } from '../notes/swarnote.js';
 
 /**
  * Kan swar(s) of a note (VexFlow `GraceNoteGroup`): a modifier that owns small notes and formats them itself.

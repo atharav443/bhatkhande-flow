@@ -1,6 +1,6 @@
-import { Element } from '../core/element';
-import { Glyph } from '../core/glyph';
-import { Tables } from '../core/tables';
+import { Element } from '../core/element.js';
+import { Glyph } from '../core/glyph.js';
+import { Tables } from '../core/tables.js';
 
 /** Same types as VexFlow's `Volta`: which ends of the bracket this row's piece has. */
 export enum VoltaType {
