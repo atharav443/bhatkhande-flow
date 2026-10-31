@@ -176,6 +176,23 @@ test('full sample: the JSON and the XML give the same SVG, and every feature is 
   assert.deepEqual(j.diagnostics.filter((d) => d.level !== 'info'), [], 'the sample has no warnings or errors');
 });
 
+test('taar dot: over the stem of the ा on सा (right of centre, inside the glyph); centred on every other swar', () => {
+  let sa = 0, other = 0;
+  for (const file of ['labelstudio/raag-bhairav-geet3-raw-export.json', 'bhimpalasi-geet.json', 'full-sample.json']) {
+    const ls = render(file).labels, swars = of(ls, 'swar');
+    for (const d of of(ls, 'octave_dot')) {
+      const x = cx(d);
+      const s = swars.filter((w) => x >= w.bbox[0] - 1 && x <= w.bbox[2] + 1).reduce((b, w) => (Math.abs(cy(w) - cy(d)) < Math.abs(cy(b) - cy(d)) ? w : b));
+      const width = s.bbox[2] - s.bbox[0];
+      if (d.data.octave_dot_position === 'above' && s.data.degree === 'S') {
+        sa++;
+        assert.ok(x - cx(s) > 0.2 * width && x <= s.bbox[2], `taar sa dot at ${x}, glyph ${s.bbox[0]}..${s.bbox[2]}`);
+      } else { other++; assert.ok(Math.abs(x - cx(s)) <= 1, `dot of ${s.data.degree} (${d.data.octave_dot_position}) is off centre by ${x - cx(s)}`); }
+    }
+  }
+  assert.ok(sa >= 4 && other >= 1, `checked ${sa} taar sa dots and ${other} other dots`);
+});
+
 /* ---------------- volta + repeat (VexFlow Volta / Barline repeat types) */
 test('volta: first ending closed (BEGIN_END) with :‖, second ending open (BEGIN) on its own row under the first', () => {
   const r = render('volta-demo.json');
