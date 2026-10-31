@@ -28,7 +28,7 @@ npx tsx cli/ls2bandish.ts out.json "<title>" page1.json page2.json   # Label Stu
 ```
 
 - `docs/ARCHITECTURE.md` covers the design: what is taken from VexFlow, and what follows the printed books.
-- `out/compare/*.compare.png` shows each scanned book page next to the render of the same bandish.
+- `out/compare/*.compare.png` shows each scanned book page next to the render of the same bandish. These are kept on your machine and not committed (`out/` is in `.gitignore`), because they contain pages of the book.
 
 ## In the browser
 
@@ -82,4 +82,4 @@ npx tsx cli/ls2bandish.ts examples/labelstudio/bhairav-geet1.json "राग भ
 npm run render -- examples/labelstudio/bhairav-geet1.json out/labelstudio --png --no-lyric-curves
 ```
 
-The converter reads your BhatkhandeSet schema: swar_type, variant, octave, matra_number, matra_fraction, sequence_in_matra, lyric_applies_to_swar_id, kan_swar + modifies_swar_id, and khatka_bracket. Pass several pages of one bandish to join them. `out/labelstudio/compare/` puts each annotated scan next to the render made from its annotations.
+The converter reads your BhatkhandeSet schema: swar_type, variant, octave, matra_number, matra_fraction, sequence_in_matra, lyric_applies_to_swar_id, kan_swar + modifies_swar_id, and khatka_bracket. Pass several pages of one bandish to join them. `out/labelstudio/compare/` puts each annotated scan next to the render made from its annotations (local only, not committed).
