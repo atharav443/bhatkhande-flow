@@ -1,0 +1,944 @@
+{
+ "metadata": {
+  "title": "राग भैरव — गीत ३",
+  "raag": "Bhairav",
+  "taal": "teentaal",
+  "source": [
+   "p08_bhairav_geet3_teentaal_source.png",
+   "p09_bhairav_geet3_antara_source.png"
+  ]
+ },
+ "sections": [
+  {
+   "name": "स्थायी",
+   "startMatra": 7,
+   "lines": [
+    {
+     "matras": [
+      {
+       "index": 7,
+       "events": [
+        {
+         "swar": "ग",
+         "lyric": "प्र",
+         "duration": "1"
+        }
+       ]
+      },
+      {
+       "index": 8,
+       "events": [
+        {
+         "swar": "म",
+         "lyric": "भु",
+         "duration": "1"
+        }
+       ]
+      },
+      {
+       "index": 9,
+       "events": [
+        {
+         "swar": "प",
+         "lyric": "दा",
+         "duration": "1/2"
+        },
+        {
+         "swar": "म",
+         "lyric": "ऽ",
+         "duration": "1/2"
+        }
+       ]
+      },
+      {
+       "index": 10,
+       "events": [
+        {
+         "swar": "ग",
+         "lyric": "ऽ",
+         "duration": "1/2"
+        },
+        {
+         "swar": "रे",
+         "komal": true,
+         "lyric": "ऽ",
+         "duration": "1/2"
+        }
+       ]
+      },
+      {
+       "index": 11,
+       "events": [
+        {
+         "type": "extend",
+         "lyric": "ऽ",
+         "duration": "1"
+        }
+       ]
+      },
+      {
+       "index": 12,
+       "events": [
+        {
+         "type": "extend",
+         "lyric": "ऽ",
+         "duration": "1"
+        }
+       ]
+      },
+      {
+       "index": 13,
+       "events": [
+        {
+         "type": "extend",
+         "lyric": "ऽ",
+         "duration": "1"
+        }
+       ]
+      },
+      {
+       "index": 14,
+       "events": [
+        {
+         "type": "extend",
+         "lyric": "ऽ",
+         "duration": "1"
+        }
+       ]
+      },
+      {
+       "index": 15,
+       "events": [
+        {
+         "swar": "सा",
+         "lyric": "ता",
+         "duration": "1"
+        }
+       ]
+      },
+      {
+       "index": 16,
+       "events": [
+        {
+         "swar": "रे",
+         "komal": true,
+         "lyric": "ऽ",
+         "duration": "1"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "matras": [
+      {
+       "index": 1,
+       "events": [
+        {
+         "swar": "म",
+         "lyric": "रे",
+         "duration": "1"
+        }
+       ]
+      },
+      {
+       "index": 2,
+       "events": [
+        {
+         "type": "extend",
+         "lyric": "ऽ",
+         "duration": "1"
+        }
+       ]
+      },
+      {
+       "index": 3,
+       "events": [
+        {
+         "type": "extend",
+         "lyric": "ऽ",
+         "duration": "1"
+        }
+       ]
+      },
+      {
+       "index": 4,
+       "events": [
+        {
+         "type": "extend",
+         "lyric": "ऽ",
+         "duration": "1"
+        }
+       ]
+      },
+      {
+       "index": 5,
+       "events": [
+        {
+         "type": "extend",
+         "lyric": "ऽ",
+         "duration": "1"
+        }
+       ]
+      },
+      {
+       "index": 6,
+       "events": [
+        {
+         "type": "extend",
+         "lyric": "ऽ",
+         "duration": "1"
+        }
+       ]
+      },
+      {
+       "index": 7,
+       "events": [
+        {
+         "swar": "म",
+         "lyric": "न",
+         "duration": "1"
+        }
+       ]
+      },
+      {
+       "index": 8,
+       "events": [
+        {
+         "swar": "ग",
+         "lyric": "क",
+         "duration": "1"
+        }
+       ]
+      },
+      {
+       "index": 9,
+       "events": [
+        {
+         "swar": "म",
+         "lyric": "रे",
+         "duration": "1"
+        }
+       ]
+      },
+      {
+       "index": 10,
+       "events": [
+        {
+         "type": "extend",
+         "lyric": "ऽ",
+         "duration": "1"
+        }
+       ]
+      },
+      {
+       "index": 11,
+       "events": [
+        {
+         "swar": "ध",
+         "komal": true,
+         "kan": [
+          {
+           "swar": "नी",
+           "octave": 0,
+           "komal": false,
+           "tivra": false
+          }
+         ],
+         "lyric": "म",
+         "duration": "1"
+        }
+       ]
+      },
+      {
+       "index": 12,
+       "events": [
+        {
+         "swar": "ध",
+         "komal": true,
+         "kan": [
+          {
+           "swar": "नी",
+           "octave": 0,
+           "komal": false,
+           "tivra": false
+          }
+         ],
+         "lyric": "न",
+         "duration": "1"
+        }
+       ]
+      },
+      {
+       "index": 13,
+       "events": [
+        {
+         "swar": "सा",
+         "octave": 1,
+         "kan": [
+          {
+           "swar": "ध",
+           "octave": 0,
+           "komal": true,
+           "tivra": false
+          }
+         ],
+         "lyric": "जी",
+         "duration": "1"
+        }
+       ]
+      },
+      {
+       "index": 14,
+       "events": [
+        {
+         "type": "extend",
+         "lyric": "ऽ",
+         "duration": "1"
+        }
+       ]
+      },
+      {
+       "index": 15,
+       "events": [
+        {
+         "swar": "सा",
+         "octave": 1,
+         "lyric": "व",
+         "duration": "1"
+        }
+       ]
+      },
+      {
+       "index": 16,
+       "events": [
+        {
+         "swar": "सा",
+         "octave": 1,
+         "lyric": "न",
+         "duration": "1"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "matras": [
+      {
+       "index": 1,
+       "events": [
+        {
+         "swar": "ध",
+         "komal": true,
+         "kan": [
+          {
+           "swar": "नी",
+           "octave": 0,
+           "komal": false,
+           "tivra": false
+          }
+         ],
+         "lyric": "ध",
+         "duration": "1"
+        }
+       ]
+      },
+      {
+       "index": 2,
+       "events": [
+        {
+         "swar": "सा",
+         "octave": 1,
+         "lyric": "री",
+         "duration": "1/2"
+        },
+        {
+         "swar": "नी",
+         "lyric": "ऽ",
+         "duration": "1/2"
+        }
+       ]
+      },
+      {
+       "index": 3,
+       "events": [
+        {
+         "swar": "ध",
+         "komal": true,
+         "lyric": "प",
+         "duration": "1"
+        }
+       ]
+      },
+      {
+       "index": 4,
+       "events": [
+        {
+         "swar": "ध",
+         "komal": true,
+         "lyric": "ल",
+         "duration": "1"
+        }
+       ]
+      },
+      {
+       "index": 5,
+       "events": [
+        {
+         "swar": "प",
+         "lyric": "छि",
+         "duration": "1"
+        }
+       ]
+      },
+      {
+       "index": 6,
+       "events": [
+        {
+         "swar": "प",
+         "lyric": "न",
+         "duration": "1"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "अन्तरा",
+   "startMatra": 9,
+   "lines": [
+    {
+     "matras": [
+      {
+       "index": 9,
+       "events": [
+        {
+         "swar": "म",
+         "lyric": "जो",
+         "duration": "1"
+        }
+       ]
+      },
+      {
+       "index": 10,
+       "events": [
+        {
+         "type": "extend",
+         "lyric": "ऽ",
+         "duration": "1"
+        }
+       ]
+      },
+      {
+       "index": 11,
+       "events": [
+        {
+         "swar": "म",
+         "lyric": "तू",
+         "duration": "1"
+        }
+       ]
+      },
+      {
+       "index": 12,
+       "events": [
+        {
+         "type": "extend",
+         "lyric": "ऽ",
+         "duration": "1"
+        }
+       ]
+      },
+      {
+       "index": 13,
+       "events": [
+        {
+         "swar": "प",
+         "lyric": "चा",
+         "duration": "1"
+        }
+       ]
+      },
+      {
+       "index": 14,
+       "events": [
+        {
+         "type": "extend",
+         "lyric": "ऽ",
+         "duration": "1"
+        }
+       ]
+      },
+      {
+       "index": 15,
+       "events": [
+        {
+         "swar": "ध",
+         "komal": true,
+         "kan": [
+          {
+           "swar": "नी",
+           "octave": 0,
+           "komal": false,
+           "tivra": false
+          }
+         ],
+         "lyric": "हे",
+         "duration": "1"
+        }
+       ]
+      },
+      {
+       "index": 16,
+       "events": [
+        {
+         "type": "extend",
+         "lyric": "ऽ",
+         "duration": "1"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "matras": [
+      {
+       "index": 1,
+       "events": [
+        {
+         "swar": "नी",
+         "lyric": "अ",
+         "duration": "1"
+        }
+       ]
+      },
+      {
+       "index": 2,
+       "events": [
+        {
+         "swar": "नी",
+         "lyric": "न",
+         "duration": "1"
+        }
+       ]
+      },
+      {
+       "index": 3,
+       "events": [
+        {
+         "swar": "सा",
+         "octave": 1,
+         "lyric": "ध",
+         "duration": "1"
+        }
+       ]
+      },
+      {
+       "index": 4,
+       "events": [
+        {
+         "swar": "सा",
+         "octave": 1,
+         "lyric": "न",
+         "duration": "1"
+        }
+       ]
+      },
+      {
+       "index": 5,
+       "events": [
+        {
+         "swar": "सा",
+         "octave": 1,
+         "lyric": "ल",
+         "duration": "1"
+        }
+       ]
+      },
+      {
+       "index": 6,
+       "events": [
+        {
+         "swar": "सा",
+         "octave": 1,
+         "lyric": "छि",
+         "duration": "1"
+        }
+       ]
+      },
+      {
+       "index": 7,
+       "events": [
+        {
+         "swar": "सा",
+         "octave": 1,
+         "lyric": "मी",
+         "duration": "1"
+        }
+       ]
+      },
+      {
+       "index": 8,
+       "events": [
+        {
+         "type": "extend",
+         "lyric": "ऽ",
+         "duration": "1"
+        }
+       ]
+      },
+      {
+       "index": 9,
+       "events": [
+        {
+         "swar": "ध",
+         "komal": true,
+         "lyric": "दू",
+         "duration": "1"
+        }
+       ]
+      },
+      {
+       "index": 10,
+       "events": [
+        {
+         "type": "extend",
+         "lyric": "ऽ",
+         "duration": "1"
+        }
+       ]
+      },
+      {
+       "index": 11,
+       "events": [
+        {
+         "swar": "ध",
+         "komal": true,
+         "lyric": "ध",
+         "duration": "1"
+        }
+       ]
+      },
+      {
+       "index": 12,
+       "events": [
+        {
+         "swar": "सा",
+         "octave": 1,
+         "lyric": "पू",
+         "duration": "1"
+        }
+       ]
+      },
+      {
+       "index": 13,
+       "events": [
+        {
+         "type": "extend",
+         "lyric": "ऽ",
+         "duration": "1"
+        }
+       ]
+      },
+      {
+       "index": 14,
+       "events": [
+        {
+         "swar": "सा",
+         "octave": 1,
+         "lyric": "त",
+         "duration": "1"
+        }
+       ]
+      },
+      {
+       "index": 15,
+       "events": [
+        {
+         "swar": "सा",
+         "octave": 1,
+         "lyric": "ब",
+         "duration": "1"
+        }
+       ]
+      },
+      {
+       "index": 16,
+       "events": [
+        {
+         "swar": "सा",
+         "octave": 1,
+         "lyric": "हु",
+         "duration": "1"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "matras": [
+      {
+       "index": 1,
+       "events": [
+        {
+         "swar": "रे",
+         "komal": true,
+         "octave": 1,
+         "lyric": "ते",
+         "duration": "1/2"
+        },
+        {
+         "swar": "रे",
+         "komal": true,
+         "octave": 1,
+         "lyric": "ऽ",
+         "duration": "1/2"
+        }
+       ]
+      },
+      {
+       "index": 2,
+       "events": [
+        {
+         "swar": "सा",
+         "octave": 1,
+         "lyric": "ऽ",
+         "duration": "1/2"
+        },
+        {
+         "swar": "नी",
+         "lyric": "ऽ",
+         "duration": "1/2"
+        }
+       ]
+      },
+      {
+       "index": 3,
+       "events": [
+        {
+         "swar": "सा",
+         "octave": 1,
+         "lyric": "ऽ",
+         "duration": "1"
+        }
+       ]
+      },
+      {
+       "index": 4,
+       "events": [
+        {
+         "type": "extend",
+         "lyric": "ऽ",
+         "duration": "1"
+        }
+       ]
+      },
+      {
+       "index": 5,
+       "events": [
+        {
+         "swar": "ध",
+         "komal": true,
+         "lyric": "रा",
+         "duration": "1"
+        }
+       ]
+      },
+      {
+       "index": 6,
+       "events": [
+        {
+         "type": "extend",
+         "lyric": "ऽ",
+         "duration": "1"
+        }
+       ]
+      },
+      {
+       "index": 7,
+       "events": [
+        {
+         "swar": "प",
+         "lyric": "ऽ",
+         "duration": "1"
+        }
+       ]
+      },
+      {
+       "index": 8,
+       "events": [
+        {
+         "type": "extend",
+         "lyric": "ऽ",
+         "duration": "1"
+        }
+       ]
+      },
+      {
+       "index": 9,
+       "events": [
+        {
+         "swar": "म",
+         "lyric": "वा",
+         "duration": "1"
+        }
+       ]
+      },
+      {
+       "index": 10,
+       "events": [
+        {
+         "swar": "ध",
+         "komal": true,
+         "kan": [
+          {
+           "swar": "नी",
+           "octave": 0,
+           "komal": false,
+           "tivra": false
+          }
+         ],
+         "lyric": "को",
+         "duration": "1"
+        }
+       ]
+      },
+      {
+       "index": 11,
+       "events": [
+        {
+         "type": "extend",
+         "lyric": "ऽ",
+         "duration": "1"
+        }
+       ]
+      },
+      {
+       "index": 12,
+       "events": [
+        {
+         "swar": "ध",
+         "komal": true,
+         "lyric": "ना",
+         "duration": "1"
+        }
+       ]
+      },
+      {
+       "index": 13,
+       "events": [
+        {
+         "type": "extend",
+         "lyric": "ऽ",
+         "duration": "1"
+        }
+       ]
+      },
+      {
+       "index": 14,
+       "events": [
+        {
+         "swar": "प",
+         "lyric": "म",
+         "duration": "1"
+        }
+       ]
+      },
+      {
+       "index": 15,
+       "events": [
+        {
+         "swar": "म",
+         "lyric": "भ",
+         "duration": "1"
+        }
+       ]
+      },
+      {
+       "index": 16,
+       "events": [
+        {
+         "swar": "प",
+         "lyric": "ज",
+         "duration": "1"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "matras": [
+      {
+       "index": 1,
+       "events": [
+        {
+         "swar": "म",
+         "lyric": "गु",
+         "duration": "1"
+        }
+       ]
+      },
+      {
+       "index": 2,
+       "events": [
+        {
+         "swar": "ग",
+         "lyric": "रु",
+         "duration": "1"
+        }
+       ]
+      },
+      {
+       "index": 3,
+       "events": [
+        {
+         "swar": "म",
+         "lyric": "को",
+         "duration": "1/2"
+        },
+        {
+         "swar": "ग",
+         "lyric": "ऽ",
+         "duration": "1/2"
+        }
+       ]
+      },
+      {
+       "index": 4,
+       "events": [
+        {
+         "swar": "रे",
+         "komal": true,
+         "lyric": "ना",
+         "duration": "1"
+        }
+       ]
+      },
+      {
+       "index": 5,
+       "events": [
+        {
+         "type": "extend",
+         "lyric": "ऽ",
+         "duration": "1"
+        }
+       ]
+      },
+      {
+       "index": 6,
+       "events": [
+        {
+         "swar": "सा",
+         "lyric": "म",
+         "duration": "1"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

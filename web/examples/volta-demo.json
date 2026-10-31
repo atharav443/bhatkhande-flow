@@ -1,0 +1,188 @@
+{
+ "metadata": {
+  "title": "आवर्तन — पहला / दूसरा अंत",
+  "taal": "teentaal"
+ },
+ "sections": [
+  {
+   "name": "स्थायी",
+   "startMatra": 1,
+   "lines": [
+    {
+     "repeatStart": true,
+     "matras": [
+      {
+       "events": [
+        {
+         "swar": "सा",
+         "lyric": "ए"
+        }
+       ]
+      },
+      {
+       "events": [
+        {
+         "swar": "रे",
+         "lyric": "री"
+        }
+       ]
+      },
+      {
+       "events": [
+        {
+         "swar": "ग",
+         "lyric": "आ"
+        }
+       ]
+      },
+      {
+       "events": [
+        {
+         "swar": "म",
+         "lyric": "ली"
+        }
+       ]
+      },
+      {
+       "events": [
+        {
+         "swar": "प",
+         "lyric": "पि"
+        }
+       ]
+      },
+      {
+       "events": [
+        {
+         "swar": "ध",
+         "lyric": "या"
+        }
+       ]
+      },
+      {
+       "events": [
+        {
+         "swar": "नी",
+         "lyric": "बि"
+        }
+       ]
+      },
+      {
+       "events": [
+        {
+         "swar": "सां",
+         "lyric": "न"
+        }
+       ]
+      },
+      {
+       "events": [
+        {
+         "swar": "नी",
+         "lyric": "ना"
+        }
+       ]
+      },
+      {
+       "events": [
+        {
+         "swar": "ध",
+         "lyric": "ही"
+        }
+       ]
+      },
+      {
+       "events": [
+        {
+         "swar": "प",
+         "lyric": "मो"
+        }
+       ]
+      },
+      {
+       "events": [
+        {
+         "swar": "म",
+         "lyric": "हे"
+        }
+       ]
+      },
+      {
+       "events": [
+        {
+         "swar": "ग",
+         "lyric": "चै"
+        }
+       ],
+       "volta": 1
+      },
+      {
+       "events": [
+        {
+         "swar": "रे",
+         "lyric": "न"
+        }
+       ],
+       "volta": 1
+      },
+      {
+       "events": [
+        {
+         "swar": "सा",
+         "lyric": "ऽ"
+        }
+       ],
+       "volta": 1
+      },
+      {
+       "events": [
+        {
+         "type": "extend",
+         "lyric": "ऽ"
+        }
+       ],
+       "volta": 1,
+       "repeatAfter": true
+      },
+      {
+       "events": [
+        {
+         "swar": "ग",
+         "lyric": "आ"
+        }
+       ],
+       "volta": 2
+      },
+      {
+       "events": [
+        {
+         "swar": "म",
+         "lyric": "वे"
+        }
+       ],
+       "volta": 2
+      },
+      {
+       "events": [
+        {
+         "swar": "प",
+         "lyric": "ऽ"
+        }
+       ],
+       "volta": 2
+      },
+      {
+       "events": [
+        {
+         "swar": "सां",
+         "lyric": "रे"
+        }
+       ],
+       "volta": 2
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

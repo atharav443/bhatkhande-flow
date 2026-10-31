@@ -1,0 +1,177 @@
+{
+ "metadata": {
+  "title": "कण — परीक्षण",
+  "taal": "teentaal"
+ },
+ "sections": [
+  {
+   "name": "",
+   "startMatra": 1,
+   "lines": [
+    {
+     "matras": [
+      {
+       "events": [
+        {
+         "swar": "ग",
+         "kan": [
+          {
+           "swar": "म",
+           "kan": {
+            "swar": "रे"
+           }
+          }
+         ],
+         "lyric": "आ"
+        }
+       ]
+      },
+      {
+       "events": [
+        {
+         "swar": "म",
+         "kan": [
+          {
+           "swar": "प"
+          }
+         ],
+         "lyric": "ऽ"
+        }
+       ]
+      },
+      {
+       "events": [
+        {
+         "swar": "प",
+         "kan": [
+          {
+           "swar": "ध",
+           "komal": true
+          },
+          {
+           "swar": "प"
+          }
+         ],
+         "lyric": "ज"
+        }
+       ]
+      },
+      {
+       "events": [
+        {
+         "swar": "सां",
+         "kan": [
+          {
+           "swar": "नी"
+          }
+         ],
+         "lyric": "ऽ"
+        }
+       ]
+      },
+      {
+       "events": [
+        {
+         "swar": "रे",
+         "komal": true,
+         "lyric": "सु"
+        }
+       ]
+      },
+      {
+       "events": [
+        {
+         "swar": "ग",
+         "lyric": "र"
+        }
+       ]
+      },
+      {
+       "events": [
+        {
+         "swar": "म",
+         "tivra": true,
+         "lyric": "ना"
+        }
+       ]
+      },
+      {
+       "events": [
+        {
+         "swar": "प",
+         "lyric": "ऽ"
+        }
+       ]
+      },
+      {
+       "events": [
+        {
+         "swar": "प",
+         "khatka": true,
+         "lyric": "द"
+        }
+       ]
+      },
+      {
+       "events": [
+        {
+         "type": "extend",
+         "lyric": "ऽ"
+        }
+       ]
+      },
+      {
+       "events": [
+        {
+         "swar": "ग",
+         "komal": true,
+         "lyric": "गा"
+        }
+       ]
+      },
+      {
+       "events": [
+        {
+         "swar": "रे",
+         "lyric": "ऽ"
+        }
+       ]
+      },
+      {
+       "events": [
+        {
+         "swar": "सा",
+         "lyric": "ये"
+        }
+       ]
+      },
+      {
+       "events": [
+        {
+         "type": "extend",
+         "lyric": "ऽ"
+        }
+       ]
+      },
+      {
+       "events": [
+        {
+         "type": "extend",
+         "lyric": "ऽ"
+        }
+       ]
+      },
+      {
+       "events": [
+        {
+         "type": "extend",
+         "lyric": "ऽ"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

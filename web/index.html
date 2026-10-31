@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bhatkhande Flow</title>
+<style>
+  @font-face { font-family: 'Tiro Devanagari Hindi'; src: url(fonts/tiro-devanagari-hindi-devanagari-400-normal.woff) format('woff'); unicode-range: U+0900-097F, U+200C-200D, U+25CC, U+A8E0-A8FF; }
+  @font-face { font-family: 'Tiro Devanagari Hindi'; src: url(fonts/tiro-devanagari-hindi-latin-400-normal.woff) format('woff'); unicode-range: U+0000-00FF, U+2000-206F, U+2212; }
+  @font-face { font-family: 'Noto Serif Devanagari'; font-weight: 400; src: url(fonts/noto-serif-devanagari-devanagari-400-normal.woff) format('woff'); unicode-range: U+0900-097F, U+200C-200D, U+25CC; }
+  @font-face { font-family: 'Noto Serif Devanagari'; font-weight: 700; src: url(fonts/noto-serif-devanagari-devanagari-700-normal.woff) format('woff'); unicode-range: U+0900-097F, U+200C-200D, U+25CC; }
+  :root { --bg:#f4f1ea; --panel:#fffdf9; --ink:#1c1a17; --muted:#6c665c; --line:#ddd5c6; --accent:#8a3412; --warn:#9a5b00; --err:#a3281a; --ok:#2d6a3e; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#151412; --panel:#1e1c19; --ink:#ebe6db; --muted:#9c9487; --line:#36322c; --accent:#e5a07a; --warn:#e3b05a; --err:#ee8a7c; --ok:#7fc795; } }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font:14px/1.45 system-ui, sans-serif; }
+  header { padding:14px 16px 4px; display:flex; flex-wrap:wrap; gap:4px 14px; align-items:baseline; }
+  h1 { font-size:17px; margin:0; font-weight:650; } header span { color:var(--muted); }
+  main { display:grid; grid-template-columns:minmax(270px,390px) 1fr; gap:12px; padding:8px 16px 20px; align-items:start; }
+  @media (max-width: 880px) { main { grid-template-columns:1fr; } }
+  .panel { background:var(--panel); border:1px solid var(--line); border-radius:8px; padding:10px; min-width:0; }
+  label { display:block; font-size:12px; color:var(--muted); margin:8px 0 3px; }
+  select, button { font:inherit; padding:6px 8px; border:1px solid var(--line); border-radius:6px; background:var(--panel); color:var(--ink); }
+  select { width:100%; } button { cursor:pointer; } button:hover { border-color:var(--accent); }
+  textarea { width:100%; height:280px; font:12px/1.4 ui-monospace, Menlo, monospace; background:var(--bg); color:var(--ink); border:1px solid var(--line); border-radius:6px; padding:8px; resize:vertical; }
+  .row { display:flex; gap:8px; flex-wrap:wrap; } .row > div { flex:1 1 130px; }
+  .checks { display:flex; gap:14px; flex-wrap:wrap; margin-top:8px; font-size:13px; } .checks label { display:inline; color:var(--ink); margin:0; }
+  #stage { position:relative; overflow:auto; background:#fff; border-radius:6px; min-height:120px; }
+  #stage svg { display:block; }
+  #stage svg g[data-degree]:hover, #stage svg g.lyric:hover { filter: drop-shadow(0 0 2px #c2410c); cursor:pointer; }
+  #diag { margin:8px 0 0; padding:0; list-style:none; font:12px/1.4 ui-monospace, Menlo, monospace; max-height:150px; overflow:auto; }
+  .warn { color:var(--warn); } .error { color:var(--err); } .ok { color:var(--ok); } .info { color:var(--muted); }
+  #pick, #counts { color:var(--muted); font:12px ui-monospace, Menlo, monospace; margin-top:6px; overflow-wrap:anywhere; }
+  .bar { display:flex; gap:8px; align-items:center; justify-content:space-between; margin-bottom:8px; flex-wrap:wrap; }
+  .bar .btns { display:flex; gap:6px; flex-wrap:wrap; }
+  #status { color:var(--muted); font-size:12px; }
+  .drop { border:1px dashed var(--line); border-radius:6px; padding:8px; text-align:center; color:var(--muted); font-size:12px; margin-top:8px; }
+  .drop.over { border-color:var(--accent); color:var(--accent); }
+</style>
+</head>
+<body>
+<header>
+  <h1>Bhatkhande Flow</h1>
+  <span>Bandish JSON, swartaal XML or a Label Studio export → Bhatkhande notation, in the browser</span>
+</header>
+<main>
+  <section class="panel">
+    <label for="example">Example</label>
+    <select id="example"></select>
+    <div class="drop" id="drop">Drop a .json / .xml file here, or <input type="file" id="file" accept=".json,.xml"></div>
+    <label for="src">Input (bandish JSON · XML · Label Studio JSON)</label>
+    <textarea id="src" spellcheck="false"></textarea>
+    <div class="row">
+      <div><label for="engine">Font engine</label>
+        <select id="engine"><option value="fontkit">Outlines (same as Node)</option><option value="canvas">Browser text (canvas)</option></select></div>
+      <div><label for="script">Script</label>
+        <select id="script"><option value="devanagari">देवनागरी</option><option value="latin">Latin (S R G M)</option></select></div>
+    </div>
+    <div class="checks">
+      <label><input type="checkbox" id="lyricCurves"> curves under grouped lyrics</label>
+      <label><input type="checkbox" id="boxes"> show label boxes</label>
+    </div>
+    <ul id="diag"></ul>
+  </section>
+  <section class="panel">
+    <div class="bar"><span id="status">loading fonts…</span>
+      <div class="btns"><button id="dlSvg">SVG</button><button id="dlPng">PNG</button><button id="dlYolo">YOLO labels</button><button id="dlJson">Bandish JSON</button></div></div>
+    <div id="stage"></div>
+    <div id="counts"></div>
+    <div id="pick">Click a swar or syllable to see its matra, fraction and class.</div>
+  </section>
+</main>
+<script src="bhatkhande-flow.js"></script>
+<script>
+(async () => {
+  const $ = (id) => document.getElementById(id);
+  const B = window.BhatkhandeFlow;
+  const COLORS = { swar:'#dc2638', swar_rest:'#0e7490', lyric:'#245ddd', lyric_rest:'#13833f', kan_swar:'#8c3bba', khatka_bracket:'#b45309', octave_dot:'#d82b9c', komal_mark:'#007567', tivra_mark:'#007567', grouping_curve:'#aa8000', meend:'#aa8000', tihai_bracket:'#555', taal_marker:'#f07a0a', vibhag_line:'#81532b', line_end_bar:'#81532b', repeat_bar:'#81532b', volta_bracket:'#6d28d9', section_heading:'#999', title:'#999' };
+  const urls = { tiroDeva:'fonts/tiro-devanagari-hindi-devanagari-400-normal.woff', tiroLatin:'fonts/tiro-devanagari-hindi-latin-400-normal.woff', notoReg:'fonts/noto-serif-devanagari-devanagari-400-normal.woff', notoBold:'fonts/noto-serif-devanagari-devanagari-700-normal.woff' };
+  const providers = {};
+  async function provider(kind) {
+    if (!providers[kind]) providers[kind] = kind === 'fontkit' ? await B.createBrowserFontProvider(urls) : (await B.ensureFontsLoaded(), B.createCanvasFontProvider());
+    return providers[kind];
+  }
+  let last = null, lastInput = null, name = 'bandish';
+
+  async function render() {
+    const kind = $('engine').value;
+    $('status').textContent = 'rendering…';
+    try {
+      const fonts = await provider(kind);
+      const input = B.toBandishInput($('src').value);
+      lastInput = input;
+      const t0 = performance.now();
+      const f = new B.Factory({ fonts, style: { script: $('script').value, textMode: kind === 'canvas' ? 'text' : 'path' }, build: { lyricCurves: $('lyricCurves').checked } });
+      const r = f.renderBandish(input);
+      last = r;
+      $('stage').innerHTML = r.svg;
+      if ($('boxes').checked) overlay(r);
+      $('status').textContent = `${Math.round(r.width)}×${Math.round(r.height)} px · ${(performance.now() - t0).toFixed(0)} ms`;
+      const c = {}; for (const l of r.labels) c[l.cls] = (c[l.cls] || 0) + 1;
+      $('counts').textContent = Object.entries(c).map(([k, v]) => `${k} ${v}`).join(' · ');
+      const d = $('diag'); d.innerHTML = '';
+      if (!r.diagnostics.length) d.innerHTML = '<li class="ok">no diagnostics</li>';
+      for (const x of r.diagnostics) { const li = document.createElement('li'); li.className = x.level; li.textContent = `${x.level} ${x.code}: ${x.message}`; d.appendChild(li); }
+    } catch (e) {
+      $('status').textContent = 'error';
+      $('diag').innerHTML = ''; const li = document.createElement('li'); li.className = 'error'; li.textContent = String(e && e.message || e); $('diag').appendChild(li);
+    }
+  }
+  function overlay(r) {
+    const svg = $('stage').querySelector('svg'), ns = 'http://www.w3.org/2000/svg', g = document.createElementNS(ns, 'g');
+    for (const l of r.labels) {
+      const [x0, y0, x1, y1] = l.bbox.map((v) => v / r.scale), rc = document.createElementNS(ns, 'rect');
+      rc.setAttribute('x', x0); rc.setAttribute('y', y0); rc.setAttribute('width', x1 - x0); rc.setAttribute('height', y1 - y0);
+      rc.setAttribute('fill', 'none'); rc.setAttribute('stroke', COLORS[l.cls] || '#000'); rc.setAttribute('stroke-width', '0.8');
+      g.appendChild(rc);
+    }
+    svg.appendChild(g);
+  }
+  const save = (blob, file) => { const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = file; a.click(); };
+  $('dlSvg').onclick = () => last && save(new Blob([last.svg], { type: 'image/svg+xml' }), `${name}.svg`);
+  $('dlYolo').onclick = () => last && save(new Blob([B.toYOLO(last.labels, last.width, last.height) + '\n# classes: ' + B.LABEL_CLASSES.join(',')], { type: 'text/plain' }), `${name}.yolo.txt`);
+  $('dlJson').onclick = () => lastInput && save(new Blob([typeof lastInput === 'string' ? lastInput : JSON.stringify(lastInput, null, 1)], { type: 'application/json' }), `${name}.bandish.json`);
+  $('dlPng').onclick = () => {
+    if (!last) return;
+    const img = new Image(), k = 2;
+    img.onload = () => { const c = document.createElement('canvas'); c.width = last.width * k; c.height = last.height * k; const x = c.getContext('2d'); x.drawImage(img, 0, 0, c.width, c.height); c.toBlob((b) => save(b, `${name}.png`)); };
+    img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(last.svg);
+  };
+  $('stage').addEventListener('click', (ev) => {
+    const g = ev.target.closest('g[class]'); if (!g || !last) return;
+    const d = g.dataset;
+    $('pick').textContent = `${g.getAttribute('class')}  ${Object.entries(d).map(([k, v]) => `${k}=${v}`).join('  ')}`;
+  });
+  let timer;
+  $('src').addEventListener('input', () => { clearTimeout(timer); timer = setTimeout(render, 300); });
+  for (const id of ['engine', 'script', 'lyricCurves', 'boxes']) $(id).addEventListener('change', render);
+  const loadText = (text, n) => { $('src').value = text; name = n.replace(/\.(json|xml)$/, ''); render(); };
+  $('example').addEventListener('change', async () => loadText(await (await fetch('examples/' + $('example').value)).text(), $('example').value));
+  $('file').addEventListener('change', async (e) => { const f = e.target.files[0]; if (f) loadText(await f.text(), f.name); });
+  const drop = $('drop');
+  drop.addEventListener('dragover', (e) => { e.preventDefault(); drop.classList.add('over'); });
+  drop.addEventListener('dragleave', () => drop.classList.remove('over'));
+  drop.addEventListener('drop', async (e) => { e.preventDefault(); drop.classList.remove('over'); const f = e.dataTransfer.files[0]; if (f) loadText(await f.text(), f.name); });
+
+  const list = await (await fetch('examples/index.json')).json();
+  for (const e of list) { const o = document.createElement('option'); o.value = e; o.textContent = e; $('example').appendChild(o); }
+  $('example').value = list.includes('bhimpalasi-geet.json') ? 'bhimpalasi-geet.json' : list[0];
+  $('example').dispatchEvent(new Event('change'));
+})();
+</script>
+</body>
+</html>

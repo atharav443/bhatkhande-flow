@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hindustani-composition version="1">
+  <metadata>
+    <raag>Bhairav</raag>
+    <taal name="teentaal"/>
+  </metadata>
+  <section name="स्थायी" start-matra="7">
+    <line number="1">
+      <matra index="7">
+        <swar duration="1">ग</swar>
+        <lyric>प्र</lyric>
+      </matra>
+      <matra index="8">
+        <swar duration="1">म</swar>
+        <lyric>भु</lyric>
+      </matra>
+      <matra index="9">
+        <swar duration="1/2">प</swar>
+        <lyric>दा</lyric>
+        <swar duration="1/2">म</swar>
+        <lyric>ऽ</lyric>
+      </matra>
+      <matra index="10">
+        <swar duration="1/2">ग</swar>
+        <lyric>ऽ</lyric>
+        <swar komal="true" duration="1/2">रे</swar>
+        <lyric>ऽ</lyric>
+      </matra>
+      <matra index="11">
+        <extend duration="1"/>
+        <lyric>ऽ</lyric>
+      </matra>
+      <matra index="12">
+        <extend duration="1"/>
+        <lyric>ऽ</lyric>
+      </matra>
+      <matra index="13">
+        <extend duration="1"/>
+        <lyric>ऽ</lyric>
+      </matra>
+      <matra index="14">
+        <extend duration="1"/>
+        <lyric>ऽ</lyric>
+      </matra>
+      <matra index="15">
+        <swar duration="1">सा</swar>
+        <lyric>ता</lyric>
+      </matra>
+      <matra index="16">
+        <swar komal="true" duration="1">रे</swar>
+        <lyric>ऽ</lyric>
+      </matra>
+    </line>
+    <line number="2">
+      <matra index="1">
+        <swar duration="1">म</swar>
+        <lyric>रे</lyric>
+      </matra>
+      <matra index="2">
+        <extend duration="1"/>
+        <lyric>ऽ</lyric>
+      </matra>
+      <matra index="3">
+        <extend duration="1"/>
+        <lyric>ऽ</lyric>
+      </matra>
+      <matra index="4">
+        <extend duration="1"/>
+        <lyric>ऽ</lyric>
+      </matra>
+      <matra index="5">
+        <extend duration="1"/>
+        <lyric>ऽ</lyric>
+      </matra>
+      <matra index="6">
+        <extend duration="1"/>
+        <lyric>ऽ</lyric>
+      </matra>
+      <matra index="7">
+        <swar duration="1">म</swar>
+        <lyric>न</lyric>
+      </matra>
+      <matra index="8">
+        <swar duration="1">ग</swar>
+        <lyric>क</lyric>
+      </matra>
+      <matra index="9">
+        <swar duration="1">म</swar>
+        <lyric>रे</lyric>
+      </matra>
+      <matra index="10">
+        <extend duration="1"/>
+        <lyric>ऽ</lyric>
+      </matra>
+      <matra index="11">
+        <swar komal="true" duration="1">ध
+          <kan>नी</kan>
+        </swar>
+        <lyric>म</lyric>
+      </matra>
+      <matra index="12">
+        <swar komal="true" duration="1">ध
+          <kan>नी</kan>
+        </swar>
+        <lyric>न</lyric>
+      </matra>
+      <matra index="13">
+        <swar octave="1" duration="1">सा
+          <kan komal="true">ध</kan>
+        </swar>
+        <lyric>जी</lyric>
+      </matra>
+      <matra index="14">
+        <extend duration="1"/>
+        <lyric>ऽ</lyric>
+      </matra>
+      <matra index="15">
+        <swar octave="1" duration="1">सा</swar>
+        <lyric>व</lyric>
+      </matra>
+      <matra index="16">
+        <swar octave="1" duration="1">सा</swar>
+        <lyric>न</lyric>
+      </matra>
+    </line>
+    <line number="3">
+      <matra index="1">
+        <swar komal="true" duration="1">ध
+          <kan>नी</kan>
+        </swar>
+        <lyric>ध</lyric>
+      </matra>
+      <matra index="2">
+        <swar octave="1" duration="1/2">सा</swar>
+        <lyric>री</lyric>
+        <swar duration="1/2">नी</swar>
+        <lyric>ऽ</lyric>
+      </matra>
+      <matra index="3">
+        <swar komal="true" duration="1">ध</swar>
+        <lyric>प</lyric>
+      </matra>
+      <matra index="4">
+        <swar komal="true" duration="1">ध</swar>
+        <lyric>ल</lyric>
+      </matra>
+      <matra index="5">
+        <swar duration="1">प</swar>
+        <lyric>छि</lyric>
+      </matra>
+      <matra index="6">
+        <swar duration="1">प</swar>
+        <lyric>न</lyric>
+      </matra>
+    </line>
+  </section>
+  <section name="अन्तरा" start-matra="9">
+    <line number="1">
+      <matra index="9">
+        <swar duration="1">म</swar>
+        <lyric>जो</lyric>
+      </matra>
+      <matra index="10">
+        <extend duration="1"/>
+        <lyric>ऽ</lyric>
+      </matra>
+      <matra index="11">
+        <swar duration="1">म</swar>
+        <lyric>तू</lyric>
+      </matra>
+      <matra index="12">
+        <extend duration="1"/>
+        <lyric>ऽ</lyric>
+      </matra>
+      <matra index="13">
+        <swar duration="1">प</swar>
+        <lyric>चा</lyric>
+      </matra>
+      <matra index="14">
+        <extend duration="1"/>
+        <lyric>ऽ</lyric>
+      </matra>
+      <matra index="15">
+        <swar komal="true" duration="1">ध
+          <kan>नी</kan>
+        </swar>
+        <lyric>हे</lyric>
+      </matra>
+      <matra index="16">
+        <extend duration="1"/>
+        <lyric>ऽ</lyric>
+      </matra>
+    </line>
+  </section>
+</hindustani-composition>

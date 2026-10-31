@@ -1,0 +1,30 @@
+{
+  "name": "bhatkhande-flow",
+  "version": "1.0.0",
+  "description": "VexFlow-style rendering engine for Bhatkhande (Hindustani) notation. Input: bandish JSON/XML. Output: SVG + dataset labels.",
+  "type": "module",
+  "main": "src/index.ts",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "tsx --test test/*.test.ts",
+    "render": "tsx cli/render.ts",
+    "build:web": "node scripts/build-web.mjs",
+    "web": "node scripts/build-web.mjs && node scripts/serve.mjs",
+    "test:browser": "node scripts/build-web.mjs && node test/browser/smoke.mjs"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@fontsource/noto-serif-devanagari": "^5.3.0",
+    "@fontsource/tiro-devanagari-hindi": "^5.3.0",
+    "fontkit": "^2.0.4"
+  },
+  "devDependencies": {
+    "@resvg/resvg-js": "^2.6.2",
+    "@types/fontkit": "^2.0.9",
+    "@types/node": "^26.6.6",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2",
+    "esbuild": "^0.25.0",
+    "playwright": "^1.50.0"
+  }
+}
