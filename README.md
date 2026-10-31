@@ -49,7 +49,7 @@ cli/            command-line tools: render, ls2bandish, bandish2xml
 web/            the playground: index.html, playground.css, playground.js
 scripts/        build-web.mjs (bundle for the browser), serve.mjs (local server)
 test/           engine tests; test/browser/smoke.mjs for the playground
-examples/       sample bandishes; examples/labelstudio/ holds Label Studio pages
+examples/       sample bandishes used by the tests; examples/labelstudio/ holds pages made from Label Studio annotations
 docs/           ARCHITECTURE.md, INPUT_FORMATS.md
 ```
 
@@ -104,8 +104,8 @@ See `examples/` for five pages transcribed from the Raag Bodh Praveshika scans.
 A raw export renders directly: `npm run render -- export.json out --png`. The converter below is only needed to inspect or edit the bandish JSON the engine builds from it, or to join several pages. Attribute reference: [`docs/INPUT_FORMATS.md`](docs/INPUT_FORMATS.md#3-label-studio-export).
 
 ```bash
-npx tsx cli/ls2bandish.ts examples/labelstudio/bhairav-geet1.json "राग भैरव — गीत १" p05_…_labelstudio.json p06_…_labelstudio.json
-npm run render -- examples/labelstudio/bhairav-geet1.json out/labelstudio --png --no-lyric-curves
+npx tsx cli/ls2bandish.ts my-bandish.json "राग भैरव — गीत १" page1_labelstudio.json page2_labelstudio.json
+npm run render -- my-bandish.json out --png --no-lyric-curves
 ```
 
 The converter reads your BhatkhandeSet schema: swar_type, variant, octave, matra_number, matra_fraction, sequence_in_matra, lyric_applies_to_swar_id, kan_swar + modifies_swar_id, and khatka_bracket. Pass several pages of one bandish to join them. `out/labelstudio/compare/` puts each annotated scan next to the render made from its annotations (local only, not committed).
