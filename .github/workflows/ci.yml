@@ -9,19 +9,15 @@ on:
 
 jobs:
   test:
-    name: Node ${{ matrix.node }}
+    name: Node 22
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        node: [20, 22]
 
     steps:
       - uses: actions/checkout@v4
 
       - uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node }}
+          node-version: 22
           cache: npm
 
       # also runs `prepare`, which builds dist/
