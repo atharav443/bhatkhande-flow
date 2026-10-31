@@ -22,7 +22,9 @@ function mapSwar(n: XNode): any {
 
 /** <tihai repeat="3" gap="1/2" unit="1/2" label="तिहाई" lands-on="sam"> <swar>..</swar> ... </tihai> as a child of <line>, in matra order. */
 function mapTihai(n: XNode): any {
-  const phrase = n.children.filter((c) => c.name === 'swar' || c.name === 'rest' || c.name === 'extend').map((c) => (c.name === 'swar' ? mapSwar(c) : { type: c.name, ...c.attrs }));
+  const phrase = n.children
+    .filter((c) => c.name === 'swar' || c.name === 'rest' || c.name === 'extend')
+    .map((c) => (c.name === 'swar' ? mapSwar(c) : { type: c.name, ...c.attrs }));
   return { tihai: { ...n.attrs, landsOn: n.attrs['lands-on'], gapKind: n.attrs['gap-kind'], phrase } };
 }
 
@@ -32,7 +34,10 @@ function mapMatra(n: XNode): any {
   for (const c of n.children) {
     if (c.name === 'swar' || c.name === 'rest' || c.name === 'extend') {
       const ev = c.name === 'swar' ? mapSwar(c) : { type: c.name, ...c.attrs };
-      if (pendingLyric !== undefined) { ev.lyric = pendingLyric; pendingLyric = undefined; }
+      if (pendingLyric !== undefined) {
+        ev.lyric = pendingLyric;
+        pendingLyric = undefined;
+      }
       events.push(ev);
     } else if (c.name === 'lyric') {
       const prev = events[events.length - 1];
@@ -41,7 +46,14 @@ function mapMatra(n: XNode): any {
     }
   }
   const marker = kid(n, 'tala-marker', 'taal-marker', 'taalmarker');
-  return { index: n.attrs.index, marker: marker?.text.trim(), volta: n.attrs.volta, 'repeat-before': n.attrs['repeat-before'], 'repeat-after': n.attrs['repeat-after'], events };
+  return {
+    index: n.attrs.index,
+    marker: marker?.text.trim(),
+    volta: n.attrs.volta,
+    'repeat-before': n.attrs['repeat-before'],
+    'repeat-after': n.attrs['repeat-after'],
+    events,
+  };
 }
 
 export function fromXML(src: string): { model: BandishModel; diagnostics: Diagnostic[] } {
@@ -53,24 +65,39 @@ export function fromXML(src: string): { model: BandishModel; diagnostics: Diagno
       if (c.name === 'tala' || c.name === 'taal') {
         // custom taal in XML: vibhags="3,3,2" markers="X,2,0" (comma or space separated)
         const list = (v?: string) => (v === undefined ? undefined : v.split(/[\s,]+/).filter(Boolean));
-        meta.taal = { ...c.attrs, ...(c.attrs.vibhags !== undefined ? { vibhags: list(c.attrs.vibhags) } : {}), ...(c.attrs.markers !== undefined ? { markers: list(c.attrs.markers) } : {}) };
-      }
-      else meta[c.name] = c.text.trim();
+        meta.taal = {
+          ...c.attrs,
+          ...(c.attrs.vibhags !== undefined ? { vibhags: list(c.attrs.vibhags) } : {}),
+          ...(c.attrs.markers !== undefined ? { markers: list(c.attrs.markers) } : {}),
+        };
+      } else meta[c.name] = c.text.trim();
     }
   }
   const raw = {
     version: root.attrs.version,
     metadata: meta,
     sections: kids(root, 'section').map((s) => ({
-      name: s.attrs.name, 'start-matra': s.attrs['start-matra'],
+      name: s.attrs.name,
+      'start-matra': s.attrs['start-matra'],
       lines: kids(s, 'line').map((l) => ({
         number: l.attrs.number,
-        'repeat-start': l.attrs['repeat-start'], 'repeat-end': l.attrs['repeat-end'],
+        'repeat-start': l.attrs['repeat-start'],
+        'repeat-end': l.attrs['repeat-end'],
         // <matra>, <khand><matra>… and <tihai> in document order
-        matras: l.children.flatMap((c) => (c.name === 'matra' ? [mapMatra(c)] : c.name === 'khand' ? kids(c, 'matra').map(mapMatra) : c.name === 'tihai' ? [mapTihai(c)] : [])),
+        matras: l.children.flatMap((c) =>
+          c.name === 'matra'
+            ? [mapMatra(c)]
+            : c.name === 'khand'
+              ? kids(c, 'matra').map(mapMatra)
+              : c.name === 'tihai'
+                ? [mapTihai(c)]
+                : [],
+        ),
       })),
     })),
-    spans: [...kids(root, 'span'), ...kids(root, 'section').flatMap((s) => kids(s, 'span'))].map((s) => ({ ...s.attrs })),
+    spans: [...kids(root, 'span'), ...kids(root, 'section').flatMap((s) => kids(s, 'span'))].map((s) => ({
+      ...s.attrs,
+    })),
   };
   return normalizeBandish(raw);
 }

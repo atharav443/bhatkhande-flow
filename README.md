@@ -12,13 +12,13 @@ npm run render -- examples/bhimpalasi-geet.json out --png
 
 Three input formats, all turned into one model before drawing. `npm run render -- <file> out --png` detects the format from the content.
 
-| You have | Format | Minimal example |
-|---|---|---|
-| A bandish you type or generate | **Bandish JSON**: `metadata` → `sections` → `lines` → `matras` → `events` | `examples/minimal-teentaal.json` |
-| A swartaal file, or you prefer tags | **Swartaal XML**: `<hindustani-composition>` with `<section>`, `<line>`, `<matra>`, `<swar>`, `<lyric>` | `examples/minimal-teentaal.xml` |
-| Annotations of a scanned page from Label Studio | **Label Studio export**: `Export` → `JSON` (full format), one task or a list of tasks | `examples/labelstudio/raag-bhairav-geet3-raw-export.json` |
+| You have                                        | Format                                                                                                  | Example                                                   |
+| ----------------------------------------------- | ------------------------------------------------------------------------------------------------------- | --------------------------------------------------------- |
+| A bandish you type or generate                  | **Bandish JSON**: `metadata` → `sections` → `lines` → `matras` → `events`                               | `examples/full-sample.json`                               |
+| A swartaal file, or you prefer tags             | **Swartaal XML**: `<hindustani-composition>` with `<section>`, `<line>`, `<matra>`, `<swar>`, `<lyric>` | `examples/full-sample.xml`                                |
+| Annotations of a scanned page from Label Studio | **Label Studio export**: `Export` → `JSON` (full format), one task or a list of tasks                   | `examples/labelstudio/raag-bhairav-geet3-raw-export.json` |
 
-The two minimal examples hold the same four matras and render to identical SVG. For every feature at once (kan, khatka, meend, volta and repeats, tihai, pickup, shorthand), open **`examples/full-sample.json`** and **`examples/full-sample.xml`**: one bandish, written in both formats, with a comment on each feature in the XML. Every field, attribute and accepted spelling is in **[`docs/INPUT_FORMATS.md`](docs/INPUT_FORMATS.md)**, including the taal names, the swar spellings, the XML tags, and the Label Studio attributes the engine reads (`swar_type`, `variant`, `octave`, `matra_number`, `matra_fraction`, `lyric_applies_to_swar_id`, `modifies_swar_id`, ...).
+The two full samples, `examples/full-sample.json` and `examples/full-sample.xml`, are one bandish written in both formats. They use every feature (kan, khatka, meend, volta and repeats, tihai, pickup, shorthand) and render to identical SVG, and the XML has a comment on each feature. Every field, attribute and accepted spelling is in **[`docs/INPUT_FORMATS.md`](docs/INPUT_FORMATS.md)**, including the taal names, the swar spellings, the XML tags, and the Label Studio attributes the engine reads (`swar_type`, `variant`, `octave`, `matra_number`, `matra_fraction`, `lyric_applies_to_swar_id`, `modifies_swar_id`, ...).
 
 Convert between them:
 
@@ -30,6 +30,31 @@ npx tsx cli/ls2bandish.ts out.json "<title>" page1.json page2.json   # Label Stu
 - `docs/ARCHITECTURE.md` covers the design: what is taken from VexFlow, and what follows the printed books.
 - `out/compare/*.compare.png` shows each scanned book page next to the render of the same bandish. These are kept on your machine and not committed (`out/` is in `.gitignore`), because they contain pages of the book.
 
+## Project layout
+
+```
+src/            the engine (TypeScript)
+  core/           base classes: Element, Fraction, BoundingBox, the style tables
+  input/          read JSON, XML and Label Studio; normalize; lower into slots
+  music/          swar and taal tables
+  notes/          swar, lyric and kan notes, voices
+  modifiers/      komal bar, tivra stroke, octave dots, khatka, kan
+  formatting/     tick and matra contexts, the formatter
+  stave/          rows (TaalStave), the page grid, bars, markers, volta
+  spanners/       grouping curve, meend, tihai bracket
+  render/         SVG output and the dataset labels
+  font/           font loading and shaping (Node and browser)
+  index.ts        public API; node.ts and browser.ts add the font providers
+cli/            command-line tools: render, ls2bandish, bandish2xml
+web/            the playground: index.html, playground.css, playground.js
+scripts/        build-web.mjs (bundle for the browser), serve.mjs (local server)
+test/           engine tests; test/browser/smoke.mjs for the playground
+examples/       sample bandishes; examples/labelstudio/ holds Label Studio pages
+docs/           ARCHITECTURE.md, INPUT_FORMATS.md
+```
+
+Code style is set by Prettier: run `npm run format` before committing (`npm run format:check` only reports).
+
 ## In the browser
 
 ```bash
@@ -37,6 +62,7 @@ npm run web          # builds web/bhatkhande-flow.js and serves the playground a
 ```
 
 You can paste or drop a **bandish JSON, a swartaal XML or a Label Studio export**. The page:
+
 - renders it live, with either engine (outlines, which are byte-identical to the Node output, or browser text);
 - can overlay the label boxes;
 - lets you click a swar to see its matra, fraction and class;

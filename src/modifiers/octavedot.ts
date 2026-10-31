@@ -33,32 +33,47 @@ export function stemCenterOffset(shape: Shape): number {
 export class OctaveDot extends Modifier {
   static CATEGORY = 'octave_dot';
   constructor(position: ModifierPosition.ABOVE | ModifierPosition.BELOW) {
-    super(); this.position = position;
+    super();
+    this.position = position;
     this.setData('octave_dot_position', position === ModifierPosition.ABOVE ? 'above' : 'below');
   }
 
   static format(dots: OctaveDot[], state: ModifierContextState): void {
     const d = Tables.style.decor;
-    let firstAbove = true, firstBelow = true;
+    let firstAbove = true,
+      firstBelow = true;
     for (const m of dots) {
-      const k = m.scale(), r = d.dotRadius * k;
+      const k = m.scale(),
+        r = d.dotRadius * k;
       if (m.position === ModifierPosition.ABOVE) {
-        m.setTextLine(state.top_px + (firstAbove ? d.dotGap : d.dotStack) * k); state.top_px = m.textLine + 2 * r; firstAbove = false;
+        m.setTextLine(state.top_px + (firstAbove ? d.dotGap : d.dotStack) * k);
+        state.top_px = m.textLine + 2 * r;
+        firstAbove = false;
       } else {
-        m.setTextLine(state.bottom_px + (firstBelow ? d.dotGap : d.dotStack) * k); state.bottom_px = m.textLine + 2 * r; firstBelow = false;
+        m.setTextLine(state.bottom_px + (firstBelow ? d.dotGap : d.dotStack) * k);
+        state.bottom_px = m.textLine + 2 * r;
+        firstBelow = false;
       }
     }
   }
-  private scale(): number { return (this.note as any)?.scale ?? 1; }
+  private scale(): number {
+    return (this.note as any)?.scale ?? 1;
+  }
 
   draw(): void {
-    const ctx = this.checkContext(), r = Tables.style.decor.dotRadius * this.scale();
+    const ctx = this.checkContext(),
+      r = Tables.style.decor.dotRadius * this.scale();
     const ink = this.getNote().getInkBox();
     // the taar dot of सा is printed over the stem of its ा, so it sits to the right of the ink centre; every other swar stays centred
     const note = this.getNote() as any;
-    const overStem = this.position === ModifierPosition.ABOVE && note.degree === 'S' && Tables.style.script === 'devanagari' && note.getGlyph?.();
+    const overStem =
+      this.position === ModifierPosition.ABOVE &&
+      note.degree === 'S' &&
+      Tables.style.script === 'devanagari' &&
+      note.getGlyph?.();
     const cx = overStem ? ink.x + stemCenterOffset(note.getGlyph().shape) : ink.x + ink.w / 2;
-    const cy = this.position === ModifierPosition.ABOVE ? ink.y - this.textLine - r : ink.y1 + this.textLine + r;
+    const cy =
+      this.position === ModifierPosition.ABOVE ? ink.y - this.textLine - r : ink.y1 + this.textLine + r;
     this.openGroup(ctx);
     ctx.save().setFillStyle(Tables.style.ink);
     ctx.circle(cx, cy, r);

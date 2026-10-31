@@ -18,21 +18,44 @@ export abstract class Note extends Tickable {
   protected fixed?: { x: number; y: number };
   abstract readonly lane: Lane;
 
-  constructor(ticks: Fraction) { super(ticks); }
+  constructor(ticks: Fraction) {
+    super(ticks);
+  }
 
-  setStave(s: TaalStave): this { this.stave = s; return this; }
-  getStave(): TaalStave | undefined { return this.stave; }
-  checkStave(): TaalStave { return defined(this.stave, 'NoStave', `${this.getCategory()} has no stave`); }
+  setStave(s: TaalStave): this {
+    this.stave = s;
+    return this;
+  }
+  getStave(): TaalStave | undefined {
+    return this.stave;
+  }
+  checkStave(): TaalStave {
+    return defined(this.stave, 'NoStave', `${this.getCategory()} has no stave`);
+  }
 
   /** place absolutely: ink-left x and baseline y */
-  setFixedPosition(x: number, y: number): this { this.fixed = { x, y }; return this; }
+  setFixedPosition(x: number, y: number): this {
+    this.fixed = { x, y };
+    return this;
+  }
 
-  protected makeGlyph(text: string, role: FontRole, size: number): Glyph { this.glyph = new Glyph(text, role, size); return this.glyph; }
-  getGlyph(): Glyph | undefined { return this.glyph; }
-  protected measureNotePx(): number { return this.glyph ? this.glyph.inkWidth : 0; }
+  protected makeGlyph(text: string, role: FontRole, size: number): Glyph {
+    this.glyph = new Glyph(text, role, size);
+    return this.glyph;
+  }
+  getGlyph(): Glyph | undefined {
+    return this.glyph;
+  }
+  protected measureNotePx(): number {
+    return this.glyph ? this.glyph.inkWidth : 0;
+  }
 
-  getBaselineY(): number { return this.fixed ? this.fixed.y : this.checkStave().getYForLane(this.lane); }
-  getInkLeft(): number { return this.fixed ? this.fixed.x : this.getNoteX(); }
+  getBaselineY(): number {
+    return this.fixed ? this.fixed.y : this.checkStave().getYForLane(this.lane);
+  }
+  getInkLeft(): number {
+    return this.fixed ? this.fixed.x : this.getNoteX();
+  }
 
   /** absolute ink box of the glyph (before modifiers) */
   getInkBox(): BoundingBox {
@@ -44,7 +67,8 @@ export abstract class Note extends Tickable {
   /** vertical ink extents relative to the baseline (above > 0 upwards), including stacked modifiers */
   getExtents(): { above: number; below: number } {
     const g = this.glyph?.shape;
-    const above = g ? -g.inkTop : 0, below = g ? Math.max(0, g.inkBottom) : 0;
+    const above = g ? -g.inkTop : 0,
+      below = g ? Math.max(0, g.inkBottom) : 0;
     const mc = this.modifierContext;
     return { above: above + (mc?.getTopPx() ?? 0), below: below + (mc?.getBottomPx() ?? 0) };
   }
@@ -58,7 +82,9 @@ export abstract class Note extends Tickable {
     ctx.closeGroup();
     for (const m of this.modifiers) m.setContext(ctx).draw();
   }
-  protected inkColor(): string { return '#151515'; }
+  protected inkColor(): string {
+    return '#151515';
+  }
   protected drawNote(): void {
     if (this.glyph) this.glyph.renderAtInk(this.checkContext(), this.getInkLeft(), this.getBaselineY());
   }

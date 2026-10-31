@@ -1,10 +1,16 @@
 /** Tiny dependency-free XML reader (elements, attributes, text, comments, CDATA, entities). Enough for bandish files. */
-export interface XNode { name: string; attrs: Record<string, string>; children: XNode[]; text: string }
+export interface XNode {
+  name: string;
+  attrs: Record<string, string>;
+  children: XNode[];
+  text: string;
+}
 
 const ENT: Record<string, string> = { amp: '&', lt: '<', gt: '>', quot: '"', apos: "'" };
 const decode = (s: string) =>
   s.replace(/&(#x[0-9a-fA-F]+|#\d+|\w+);/g, (m, e: string) => {
-    if (e[0] === '#') return String.fromCodePoint(e[1] === 'x' ? parseInt(e.slice(2), 16) : parseInt(e.slice(1), 10));
+    if (e[0] === '#')
+      return String.fromCodePoint(e[1] === 'x' ? parseInt(e.slice(2), 16) : parseInt(e.slice(1), 10));
     return ENT[e] ?? m;
   });
 
@@ -15,11 +21,30 @@ export function parseXML(src: string): XNode {
   while (i < src.length) {
     const lt = src.indexOf('<', i);
     const top = stack[stack.length - 1];
-    if (lt < 0) { top.text += decode(src.slice(i)); break; }
+    if (lt < 0) {
+      top.text += decode(src.slice(i));
+      break;
+    }
     if (lt > i) top.text += decode(src.slice(i, lt));
-    if (src.startsWith('<!--', lt)) { const e = src.indexOf('-->', lt); if (e < 0) throw new Error('Unterminated XML comment'); i = e + 3; continue; }
-    if (src.startsWith('<![CDATA[', lt)) { const e = src.indexOf(']]>', lt); if (e < 0) throw new Error('Unterminated CDATA'); top.text += src.slice(lt + 9, e); i = e + 3; continue; }
-    if (src.startsWith('<?', lt) || src.startsWith('<!', lt)) { const e = src.indexOf('>', lt); if (e < 0) throw new Error('Unterminated declaration'); i = e + 1; continue; }
+    if (src.startsWith('<!--', lt)) {
+      const e = src.indexOf('-->', lt);
+      if (e < 0) throw new Error('Unterminated XML comment');
+      i = e + 3;
+      continue;
+    }
+    if (src.startsWith('<![CDATA[', lt)) {
+      const e = src.indexOf(']]>', lt);
+      if (e < 0) throw new Error('Unterminated CDATA');
+      top.text += src.slice(lt + 9, e);
+      i = e + 3;
+      continue;
+    }
+    if (src.startsWith('<?', lt) || src.startsWith('<!', lt)) {
+      const e = src.indexOf('>', lt);
+      if (e < 0) throw new Error('Unterminated declaration');
+      i = e + 1;
+      continue;
+    }
     const gt = src.indexOf('>', lt);
     if (gt < 0) throw new Error('Unterminated tag');
     const body = src.slice(lt + 1, gt);

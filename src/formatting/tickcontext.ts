@@ -12,17 +12,36 @@ export class TickContext {
   protected preFormatted = false;
   constructor(readonly onset: Fraction) {}
 
-  addTickable(t: Tickable): this { this.tickables.push(t); t.setTickContext(this); this.preFormatted = false; return this; }
-  getTickables(): Tickable[] { return this.tickables; }
+  addTickable(t: Tickable): this {
+    this.tickables.push(t);
+    t.setTickContext(this);
+    this.preFormatted = false;
+    return this;
+  }
+  getTickables(): Tickable[] {
+    return this.tickables;
+  }
   preFormat(): this {
     if (this.preFormatted) return this;
     this.width = 0;
-    for (const t of this.tickables) { t.preFormat(); this.width = Math.max(this.width, t.getWidth()); }
+    for (const t of this.tickables) {
+      t.preFormat();
+      this.width = Math.max(this.width, t.getWidth());
+    }
     this.preFormatted = true;
     return this;
   }
-  getWidth(): number { return this.width; }
-  getX(): number { return this.x; }
-  setX(x: number): this { this.x = x; return this; }
-  getCenterX(): number { return this.x + this.width / 2; }
+  getWidth(): number {
+    return this.width;
+  }
+  getX(): number {
+    return this.x;
+  }
+  setX(x: number): this {
+    this.x = x;
+    return this;
+  }
+  getCenterX(): number {
+    return this.x + this.width / 2;
+  }
 }

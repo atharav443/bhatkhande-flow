@@ -9,16 +9,23 @@ import { Note } from './note';
 export class LyricNote extends Note {
   static CATEGORY = 'lyric';
   readonly lane = 'lyric' as const;
-  constructor(readonly text: string, ticks: Fraction) {
+  constructor(
+    readonly text: string,
+    ticks: Fraction,
+  ) {
     super(ticks);
     this.makeGlyph(text, 'lyric', Tables.style.fontSize.lyric);
     this.setData('text', text);
   }
-  protected inkColor(): string { return Tables.style.ink; }
+  protected inkColor(): string {
+    return Tables.style.ink;
+  }
 }
 
 /** "ऽ" in the lyric line: the syllable is prolonged (Bhatkhande convention). Category `lyric_rest`. */
 export class LyricRest extends LyricNote {
   static CATEGORY = 'lyric_rest';
-  constructor(ticks: Fraction, text = 'ऽ') { super(text, ticks); }
+  constructor(ticks: Fraction, text = 'ऽ') {
+    super(text, ticks);
+  }
 }

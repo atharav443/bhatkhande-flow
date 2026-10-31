@@ -50,7 +50,11 @@ export class Formatter {
     return this;
   }
 
-  preFormat(): this { for (const tc of this.tickList) tc.preFormat(); this.createMatraContexts(); return this; }
+  preFormat(): this {
+    for (const tc of this.tickList) tc.preFormat();
+    this.createMatraContexts();
+    return this;
+  }
 
   protected createMatraContexts(): void {
     const by = new Map<number, TickContext[]>();
@@ -58,17 +62,29 @@ export class Formatter {
       const m = Math.floor(tc.onset.toNumber() + 1e-9);
       (by.get(m) ?? by.set(m, []).get(m)!).push(tc);
     }
-    this.matraContexts = [...by.entries()].sort((a, b) => a[0] - b[0]).map(([i, t]) => new MatraContext(i, t));
+    this.matraContexts = [...by.entries()]
+      .sort((a, b) => a[0] - b[0])
+      .map(([i, t]) => new MatraContext(i, t));
   }
-  getMatraContexts(): MatraContext[] { return this.matraContexts; }
-  getMatraContext(i: number): MatraContext | undefined { return this.matraContexts.find((m) => m.index === i); }
+  getMatraContexts(): MatraContext[] {
+    return this.matraContexts;
+  }
+  getMatraContext(i: number): MatraContext | undefined {
+    return this.matraContexts.find((m) => m.index === i);
+  }
   /** widest packed matra: drives the page-wide column width */
-  getMaxMatraWidth(): number { return Math.max(0, ...this.matraContexts.map((m) => m.getWidth())); }
+  getMaxMatraWidth(): number {
+    return Math.max(0, ...this.matraContexts.map((m) => m.getWidth()));
+  }
 
   /** assign x: matra i occupies column `col(i)` */
   formatToColumns(col: (matraIndex: number) => { x: number; w: number }): this {
-    if (!this.matraContexts.length && this.tickList.length) throw new RuntimeError('NotPreformatted', 'call preFormat() first');
-    for (const m of this.matraContexts) { const c = col(m.index); m.place(c.x, c.w); }
+    if (!this.matraContexts.length && this.tickList.length)
+      throw new RuntimeError('NotPreformatted', 'call preFormat() first');
+    for (const m of this.matraContexts) {
+      const c = col(m.index);
+      m.place(c.x, c.w);
+    }
     return this;
   }
 }

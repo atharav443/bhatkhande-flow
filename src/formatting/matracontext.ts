@@ -7,7 +7,10 @@ import type { TickContext } from './tickcontext';
  * (गम, पनी, -रे) and the cluster is centred in the matra's column, with a grouping curve underneath.
  */
 export class MatraContext {
-  constructor(readonly index: number, readonly ticks: TickContext[]) {}
+  constructor(
+    readonly index: number,
+    readonly ticks: TickContext[],
+  ) {}
   /** packed width of the cluster */
   getWidth(): number {
     const g = Tables.style.spacing.clusterGap;
@@ -17,6 +20,9 @@ export class MatraContext {
   place(colX: number, colW: number): void {
     const g = Tables.style.spacing.clusterGap;
     let x = colX + (colW - this.getWidth()) / 2;
-    for (const t of this.ticks) { t.setX(x); x += t.getWidth() + g; }
+    for (const t of this.ticks) {
+      t.setX(x);
+      x += t.getWidth() + g;
+    }
   }
 }

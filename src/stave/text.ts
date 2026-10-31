@@ -9,11 +9,29 @@ export class TextLine extends Element {
   readonly glyph: Glyph;
   x = 0;
   baseline = 0;
-  constructor(readonly text: string, role: FontRole, size: number) { super(); this.glyph = new Glyph(text, role, size); this.setData('text', text); }
-  get above(): number { return -this.glyph.shape.inkTop; }
-  get below(): number { return Math.max(0, this.glyph.shape.inkBottom); }
-  get width(): number { return this.glyph.inkWidth; }
-  at(inkX: number, baseline: number): this { this.x = inkX; this.baseline = baseline; return this; }
+  constructor(
+    readonly text: string,
+    role: FontRole,
+    size: number,
+  ) {
+    super();
+    this.glyph = new Glyph(text, role, size);
+    this.setData('text', text);
+  }
+  get above(): number {
+    return -this.glyph.shape.inkTop;
+  }
+  get below(): number {
+    return Math.max(0, this.glyph.shape.inkBottom);
+  }
+  get width(): number {
+    return this.glyph.inkWidth;
+  }
+  at(inkX: number, baseline: number): this {
+    this.x = inkX;
+    this.baseline = baseline;
+    return this;
+  }
   draw(): void {
     const ctx = this.checkContext();
     this.openGroup(ctx);
@@ -23,5 +41,9 @@ export class TextLine extends Element {
     this.setRendered();
   }
 }
-export class Title extends TextLine { static CATEGORY = 'title'; }
-export class SectionHeading extends TextLine { static CATEGORY = 'section_heading'; }
+export class Title extends TextLine {
+  static CATEGORY = 'title';
+}
+export class SectionHeading extends TextLine {
+  static CATEGORY = 'section_heading';
+}

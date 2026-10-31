@@ -7,8 +7,18 @@ import { SectionHeading, TextLine, Title } from './text';
 import { Meend } from '../spanners/meend';
 import { TihaiBracket } from '../spanners/tihai';
 
-export interface PageSection { heading?: string; gridStart: number; staves: TaalStave[] }
-export interface PageHeader { title?: string; subtitle?: string; label?: string; right?: string; text?: string[] }
+export interface PageSection {
+  heading?: string;
+  gridStart: number;
+  staves: TaalStave[];
+}
+export interface PageHeader {
+  title?: string;
+  subtitle?: string;
+  label?: string;
+  right?: string;
+  text?: string[];
+}
 
 /**
  * The page (VexFlow `System` + the score layout around it). Like a System running ONE formatter over all staves,
@@ -20,19 +30,34 @@ export class Page extends Element {
   protected items: Element[] = [];
   width = 0;
   height = 0;
-  constructor(readonly taal: TaalDef, readonly header: PageHeader, readonly sections: PageSection[]) { super(); }
+  constructor(
+    readonly taal: TaalDef,
+    readonly header: PageHeader,
+    readonly sections: PageSection[],
+  ) {
+    super();
+  }
 
-  addSpanner(e: Element): this { this.spanners.push(e); return this; }
-  allStaves(): TaalStave[] { return this.sections.flatMap((s) => s.staves); }
+  addSpanner(e: Element): this {
+    this.spanners.push(e);
+    return this;
+  }
+  allStaves(): TaalStave[] {
+    return this.sections.flatMap((s) => s.staves);
+  }
 
   format(): this {
-    const st = Tables.style, M = st.spacing.margin;
+    const st = Tables.style,
+      M = st.spacing.margin;
     const staves = this.allStaves();
     // 1. measure every row (joinVoices, tick contexts, min widths)
     staves.forEach((s) => s.preFormat());
     // 2. one page-wide matra width
-    const mw = Math.max(st.fontSize.swar * 1.25, ...staves.map((s) => s.getMaxMatraWidth())) + 2 * st.spacing.matraPad;
-    const grids = this.sections.map((sec) => new ColumnGrid(this.taal, sec.gridStart, mw, st.spacing.vibhagGap, M));
+    const mw =
+      Math.max(st.fontSize.swar * 1.25, ...staves.map((s) => s.getMaxMatraWidth())) + 2 * st.spacing.matraPad;
+    const grids = this.sections.map(
+      (sec) => new ColumnGrid(this.taal, sec.gridStart, mw, st.spacing.vibhagGap, M),
+    );
     this.sections.forEach((sec, i) => sec.staves.forEach((s) => s.formatX(grids[i])));
     const gridW = grids[0]?.width() ?? 0;
     // 3. spanners reserve lanes on the rows they touch
@@ -49,7 +74,8 @@ export class Page extends Element {
       const t = h.title ? new Title(h.title, 'title', st.fontSize.title) : undefined;
       const l = h.label ? new TextLine(h.label, 'subtitle', st.fontSize.label) : undefined;
       const r = h.right ? new TextLine(h.right, 'subtitle', st.fontSize.label) : undefined;
-      const above = Math.max(t?.above ?? 0, l?.above ?? 0, r?.above ?? 0), below = Math.max(t?.below ?? 0, l?.below ?? 0, r?.below ?? 0);
+      const above = Math.max(t?.above ?? 0, l?.above ?? 0, r?.above ?? 0),
+        below = Math.max(t?.below ?? 0, l?.below ?? 0, r?.below ?? 0);
       const base = y + above;
       if (t) this.items.push(t.at((pageW - t.width) / 2, base));
       if (l) this.items.push(l.at(M, base));
@@ -64,7 +90,10 @@ export class Page extends Element {
     if (h.text?.length) {
       const lines = h.text.map((t) => new TextLine(t, 'subtitle', st.fontSize.text));
       const w = Math.max(...lines.map((l) => l.width));
-      for (const l of lines) { this.items.push(l.at((pageW - w) / 2, y + l.above)); y += st.fontSize.text * 1.5; }
+      for (const l of lines) {
+        this.items.push(l.at((pageW - w) / 2, y + l.above));
+        y += st.fontSize.text * 1.5;
+      }
       y += 6;
     }
     const nominal = TaalStave.nominalMetrics();
@@ -75,7 +104,10 @@ export class Page extends Element {
         this.items.push(hd.at((pageW - hd.width) / 2, y + hd.above));
         y += hd.above + hd.below + st.spacing.headingGap;
       }
-      sec.staves.forEach((s) => { s.formatY(y, nominal); y += s.getHeight() + st.spacing.rowGap; });
+      sec.staves.forEach((s) => {
+        s.formatY(y, nominal);
+        y += s.getHeight() + st.spacing.rowGap;
+      });
     });
     this.width = pageW;
     this.height = y - st.spacing.rowGap + M;

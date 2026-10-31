@@ -1,55 +1,190 @@
+// Convert a bandish JSON (or a Label Studio export) into swartaal XML (<hindustani-composition>).
+//
+// Usage:
+//   npx tsx cli/bandish2xml.ts <in.json> <out.xml>
+//
+// Written: metadata (title, raag, taal), sections, lines, matras (index, volta, repeat signs),
+// swars (octave, komal, tivra, khatka, duration, meend, id), kan (also nested), rests,
+// held swars and lyrics.
+// Not written: tihai items and top-level spans. They are reported, and the XML is still written.
+
 import { readFileSync, writeFileSync } from 'node:fs';
 import { isLabelStudio, labelStudioToBandish } from '../src/input/fromLabelStudio';
 
-/** usage: tsx cli/bandish2xml.ts <in.json> <out.xml>   (in = bandish JSON, or a Label Studio export) -> swartaal <hindustani-composition> XML */
-const [inp, out] = process.argv.slice(2);
-if (!inp || !out) { console.error('usage: bandish2xml <in.json> <out.xml>'); process.exit(1); }
-const j = JSON.parse(readFileSync(inp, 'utf8'));
-const b = isLabelStudio(j) ? labelStudioToBandish(Array.isArray(j) ? j : [j]) : j;
+const USAGE = 'usage: npx tsx cli/bandish2xml.ts <in.json> <out.xml>';
 
-const esc = (s: unknown) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-const attrs = (o: Record<string, unknown>) => Object.entries(o).filter(([, v]) => v !== undefined && v !== false && v !== null && v !== 0 && v !== '').map(([k, v]) => ` ${k}="${esc(v === true ? 'true' : v)}"`).join('');
+// The input is loose, user-written JSON, so it is read as plain objects.
+type Json = Record<string, any>;
 
-function kan(k: any, pad: string): string {
-  const nested = (k.kan ?? []) as any[];
-  const a = attrs({ octave: k.octave, komal: k.komal, tivra: k.tivra });
-  return nested.length ? `${pad}<kan${a}>${esc(k.swar)}\n${nested.map((n) => kan(n, pad + '  ')).join('\n')}\n${pad}</kan>` : `${pad}<kan${a}>${esc(k.swar)}</kan>`;
+// ---------------------------------------------------------------- helpers
+
+/** Escape text for use inside XML. */
+function escapeXml(value: unknown): string {
+  return String(value)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
 }
 
-function event(e: any, pad: string): string[] {
-  const rows: string[] = [];
-  const lyric = e.lyric !== undefined ? `${pad}<lyric>${esc(e.lyric)}</lyric>` : undefined;
-  if (e.type === 'extend' || e.type === 'rest') {
-    rows.push(`${pad}<${e.type}${attrs({ duration: e.duration })}/>`);
+/**
+ * ` name="value"` for each attribute that is set.
+ * Skipped: undefined, null, false, '' and 0 (0 is the default, e.g. madhya octave).
+ */
+function attributes(values: Json): string {
+  return Object.entries(values)
+    .filter(
+      ([, value]) => value !== undefined && value !== null && value !== false && value !== '' && value !== 0,
+    )
+    .map(([name, value]) => ` ${name}="${escapeXml(value === true ? 'true' : value)}"`)
+    .join('');
+}
+
+/** JSON event shorthand: "-" is a held swar, "," a rest, anything else a swar's text. */
+const HELD = new Set(['-', '–', '—', 'ऽ', '_', '~']);
+const REST = new Set(['rest', ',', '0']);
+
+function expandShorthand(event: Json | string): Json {
+  if (typeof event !== 'string') return event;
+  if (HELD.has(event.trim())) return { type: 'extend' };
+  if (REST.has(event.trim())) return { type: 'rest' };
+  return { swar: event };
+}
+
+// ---------------------------------------------------------------- elements
+
+/** <kan> grace note; a kan can hold its own <kan> (kan inside kan). */
+function kanXml(kan: Json | string, indent: string): string[] {
+  const k = typeof kan === 'string' ? { swar: kan } : kan;
+  const attrs = attributes({ octave: k.octave, komal: k.komal, tivra: k.tivra });
+  const nested: (Json | string)[] = k.kan === undefined ? [] : Array.isArray(k.kan) ? k.kan : [k.kan];
+
+  if (nested.length === 0) return [`${indent}<kan${attrs}>${escapeXml(k.swar)}</kan>`];
+  return [
+    `${indent}<kan${attrs}>${escapeXml(k.swar)}`,
+    ...nested.flatMap((inner) => kanXml(inner, indent + '  ')),
+    `${indent}</kan>`,
+  ];
+}
+
+/** One event: <swar>, <extend/> or <rest/>, followed by its <lyric> if it has one. */
+function eventXml(rawEvent: Json | string, indent: string): string[] {
+  const event = expandShorthand(rawEvent);
+  const lines: string[] = [];
+
+  if (event.type === 'extend' || event.type === 'rest') {
+    lines.push(`${indent}<${event.type}${attributes({ duration: event.duration })}/>`);
   } else {
-    const a = attrs({ octave: e.octave, komal: e.komal, tivra: e.tivra, khatka: e.khatka, duration: e.duration });
-    const kans = (e.kan ?? []) as any[];
-    if (kans.length) rows.push(`${pad}<swar${a}>${esc(e.swar)}`, ...kans.map((k) => kan(k, pad + '  ')), `${pad}</swar>`);
-    else rows.push(`${pad}<swar${a}>${esc(e.swar)}</swar>`);
+    const attrs = attributes({
+      id: event.id,
+      octave: event.octave,
+      komal: event.komal,
+      tivra: event.tivra,
+      khatka: event.khatka,
+      duration: event.duration,
+      meend: event.meend,
+    });
+    const swarText = escapeXml(event.swar ?? event.text ?? event.degree);
+    const kans: (Json | string)[] =
+      event.kan === undefined ? [] : Array.isArray(event.kan) ? event.kan : [event.kan];
+
+    if (kans.length === 0) {
+      lines.push(`${indent}<swar${attrs}>${swarText}</swar>`);
+    } else {
+      lines.push(`${indent}<swar${attrs}>${swarText}`);
+      for (const kan of kans) lines.push(...kanXml(kan, indent + '  '));
+      lines.push(`${indent}</swar>`);
+    }
   }
-  if (lyric) rows.push(lyric);
-  return rows;
+
+  if (event.lyric !== undefined) lines.push(`${indent}<lyric>${escapeXml(event.lyric)}</lyric>`);
+  return lines;
 }
 
-const md = b.metadata ?? {};
-const x: string[] = ['<?xml version="1.0" encoding="UTF-8"?>', `<hindustani-composition version="1">`, '  <metadata>'];
-if (md.title) x.push(`    <title>${esc(md.title)}</title>`);
-if (md.raag) x.push(`    <raag>${esc(md.raag)}</raag>`);
-if (md.taal) x.push(typeof md.taal === 'string' ? `    <taal name="${esc(md.taal)}"/>` : `    <taal${attrs({ name: md.taal.name, 'total-matras': md.taal.totalMatras })}/>`);
-x.push('  </metadata>');
-for (const s of b.sections as any[]) {
-  x.push(`  <section${attrs({ name: s.name, 'start-matra': s.startMatra })}>`);
-  s.lines.forEach((l: any, i: number) => {
-    x.push(`    <line${attrs({ number: l.number ?? i + 1, 'repeat-start': l.repeatStart, 'repeat-end': l.repeatEnd })}>`);
-    for (const m of l.matras) {
-      x.push(`      <matra${attrs({ index: m.index, volta: m.volta, 'repeat-before': m.repeatBefore, 'repeat-after': m.repeatAfter })}>`);
-      for (const e of m.events) x.push(...event(e, '        '));
-      x.push('      </matra>');
-    }
-    x.push('    </line>');
-  });
-  x.push('  </section>');
+function metadataXml(metadata: Json): string[] {
+  const lines = ['  <metadata>'];
+  if (metadata.title) lines.push(`    <title>${escapeXml(metadata.title)}</title>`);
+  if (metadata.raag) lines.push(`    <raag>${escapeXml(metadata.raag)}</raag>`);
+  if (typeof metadata.taal === 'string') {
+    lines.push(`    <taal name="${escapeXml(metadata.taal)}"/>`);
+  } else if (metadata.taal) {
+    const t = metadata.taal;
+    lines.push(
+      `    <taal${attributes({
+        name: t.name,
+        vibhags: t.vibhags?.join(','),
+        markers: t.markers?.join(','),
+        'total-matras': t.totalMatras,
+      })}/>`,
+    );
+  }
+  lines.push('  </metadata>');
+  return lines;
 }
-x.push('</hindustani-composition>', '');
-writeFileSync(out, x.join('\n'));
-console.log(`${out}: ${b.sections.length} section(s)`);
+
+/** Collects what this converter cannot write, so it can be reported instead of lost silently. */
+const skipped: string[] = [];
+
+function sectionXml(section: Json): string[] {
+  const lines = [`  <section${attributes({ name: section.name, 'start-matra': section.startMatra })}>`];
+
+  section.lines.forEach((line: Json, lineIndex: number) => {
+    const lineAttrs = attributes({
+      number: line.number ?? lineIndex + 1,
+      'repeat-start': line.repeatStart,
+      'repeat-end': line.repeatEnd,
+    });
+    lines.push(`    <line${lineAttrs}>`);
+
+    for (const matra of line.matras) {
+      if (matra.tihai !== undefined) {
+        skipped.push(`tihai in section "${section.name}", line ${lineIndex + 1}`);
+        continue;
+      }
+      const matraAttrs = attributes({
+        index: matra.index,
+        volta: matra.volta,
+        'repeat-before': matra.repeatBefore,
+        'repeat-after': matra.repeatAfter,
+      });
+      lines.push(`      <matra${matraAttrs}>`);
+      for (const event of matra.events ?? []) lines.push(...eventXml(event, '        '));
+      lines.push('      </matra>');
+    }
+
+    lines.push('    </line>');
+  });
+
+  lines.push('  </section>');
+  return lines;
+}
+
+// ---------------------------------------------------------------- main
+
+const [inFile, outFile] = process.argv.slice(2);
+if (!inFile || !outFile) {
+  console.error(USAGE);
+  process.exit(1);
+}
+
+const parsed = JSON.parse(readFileSync(inFile, 'utf8'));
+const bandish: Json = isLabelStudio(parsed)
+  ? labelStudioToBandish(Array.isArray(parsed) ? parsed : [parsed])
+  : parsed;
+
+if (Array.isArray(bandish.spans) && bandish.spans.length > 0) {
+  skipped.push(`${bandish.spans.length} top-level span(s)`);
+}
+
+const xml = [
+  '<?xml version="1.0" encoding="UTF-8"?>',
+  '<hindustani-composition version="1">',
+  ...metadataXml(bandish.metadata ?? {}),
+  ...bandish.sections.flatMap(sectionXml),
+  '</hindustani-composition>',
+  '',
+].join('\n');
+
+writeFileSync(outFile, xml);
+console.log(`${outFile}: ${bandish.sections.length} section(s)`);
+for (const what of skipped) console.log(`  not converted (add it to the XML by hand): ${what}`);

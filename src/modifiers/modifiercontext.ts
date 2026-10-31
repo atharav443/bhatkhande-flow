@@ -33,7 +33,9 @@ export class ModifierContext {
     this.preFormatted = false;
     return this;
   }
-  getMembers(category: string): Member[] { return this.members[category] ?? []; }
+  getMembers(category: string): Member[] {
+    return this.members[category] ?? [];
+  }
 
   preFormat(): void {
     if (this.preFormatted) return;
@@ -45,9 +47,19 @@ export class ModifierContext {
     KanGroup.format(this.getMembers(KanGroup.CATEGORY) as KanGroup[], s);
     this.preFormatted = true;
   }
-  getLeftShift(): number { return this.state.left_shift; }
-  getRightShift(): number { return this.state.right_shift; }
-  getTopPx(): number { return this.state.top_px; }
-  getBottomPx(): number { return this.state.bottom_px; }
-  getState(): ModifierContextState { return this.state; }
+  getLeftShift(): number {
+    return this.state.left_shift;
+  }
+  getRightShift(): number {
+    return this.state.right_shift;
+  }
+  getTopPx(): number {
+    return this.state.top_px;
+  }
+  getBottomPx(): number {
+    return this.state.bottom_px;
+  }
+  getState(): ModifierContextState {
+    return this.state;
+  }
 }

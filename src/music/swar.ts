@@ -21,8 +21,16 @@ export interface ParsedSwar {
   octaveHint?: number;
 }
 
-const DEVA_BASE: Record<string, Degree> = { 'स': 'S', 'र': 'R', 'ग': 'G', 'म': 'M', 'प': 'P', 'ध': 'D', 'न': 'N' };
-const LATIN_NAMES: Record<string, Degree> = { sa: 'S', re: 'R', ga: 'G', ma: 'M', pa: 'P', dha: 'D', ni: 'N' };
+const DEVA_BASE: Record<string, Degree> = { स: 'S', र: 'R', ग: 'G', म: 'M', प: 'P', ध: 'D', न: 'N' };
+const LATIN_NAMES: Record<string, Degree> = {
+  sa: 'S',
+  re: 'R',
+  ga: 'G',
+  ma: 'M',
+  pa: 'P',
+  dha: 'D',
+  ni: 'N',
+};
 
 /** Accepts Devanagari (सा रे ग म प ध नि, with variants), Latin names (Sa Re ...), and single letters (S R G M P D N; r g d n = komal, m = tivra). */
 export function parseSwarText(raw: string): ParsedSwar | undefined {
@@ -30,8 +38,14 @@ export function parseSwarText(raw: string): ParsedSwar | undefined {
   if (!t) return undefined;
   // octave shorthands used in readings and typed notation: S' / सा' = taar, S. / ध़ / ध. = mandra (doubled = ati-)
   // Unicode svara marks: ॒ (anudatta) = komal, ॑ (udatta) = tivra
-  if (t.endsWith('॒')) { const b = parseSwarText(t.slice(0, -1)); return b && { ...b, komal: true }; }
-  if (t.endsWith('॑')) { const b = parseSwarText(t.slice(0, -1)); return b && { ...b, tivra: true }; }
+  if (t.endsWith('॒')) {
+    const b = parseSwarText(t.slice(0, -1));
+    return b && { ...b, komal: true };
+  }
+  if (t.endsWith('॑')) {
+    const b = parseSwarText(t.slice(0, -1));
+    return b && { ...b, tivra: true };
+  }
   const m = /^(.*?)('{1,2}|\.{1,2}|़)$/.exec(t);
   if (m && m[1]) {
     const base = parseSwarText(m[1]);
@@ -58,11 +72,23 @@ export function parseOctave(v: unknown): number | undefined {
   if (typeof v !== 'string') return undefined;
   const s = v.trim().toLowerCase();
   const map: Record<string, number> = {
-    'ati-mandra': -2, 'ati_mandra': -2, 'atimandra': -2,
-    mandra: -1, lower: -1, low: -1,
-    madhya: 0, middle: 0, mid: 0, '': 0,
-    taar: 1, tar: 1, higher: 1, high: 1,
-    'ati-taar': 2, 'ati_taar': 2, 'atitaar': 2,
+    'ati-mandra': -2,
+    ati_mandra: -2,
+    atimandra: -2,
+    mandra: -1,
+    lower: -1,
+    low: -1,
+    madhya: 0,
+    middle: 0,
+    mid: 0,
+    '': 0,
+    taar: 1,
+    tar: 1,
+    higher: 1,
+    high: 1,
+    'ati-taar': 2,
+    ati_taar: 2,
+    atitaar: 2,
   };
   if (s in map) return map[s];
   const n = Number(s);

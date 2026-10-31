@@ -2,10 +2,21 @@ import type { Fraction } from '../core/fraction';
 import type { Degree } from '../music/swar';
 
 export type Level = 'error' | 'warn' | 'info';
-export interface Diagnostic { level: Level; code: string; message: string; path?: string }
+export interface Diagnostic {
+  level: Level;
+  code: string;
+  message: string;
+  path?: string;
+}
 
 /** A grace note. `kan` nests a grace note of the grace note (kan-inside-kan); depth is limited by the parser (MAX_KAN_DEPTH). */
-export interface KanNote { degree: Degree; octave: number; komal: boolean; tivra: boolean; kan?: KanNote[] }
+export interface KanNote {
+  degree: Degree;
+  octave: number;
+  komal: boolean;
+  tivra: boolean;
+  kan?: KanNote[];
+}
 
 export interface SwarEvent {
   type: 'swar';
@@ -23,8 +34,18 @@ export interface SwarEvent {
   /** Bhatkhande khatka, printed as the swar in parentheses: (प) */
   khatka?: boolean;
 }
-export interface RestEvent { type: 'rest'; id?: string; duration?: Fraction; lyric?: string }
-export interface ExtendEvent { type: 'extend'; id?: string; duration?: Fraction; lyric?: string }
+export interface RestEvent {
+  type: 'rest';
+  id?: string;
+  duration?: Fraction;
+  lyric?: string;
+}
+export interface ExtendEvent {
+  type: 'extend';
+  id?: string;
+  duration?: Fraction;
+  lyric?: string;
+}
 export type EventModel = SwarEvent | RestEvent | ExtendEvent;
 
 export interface MatraModel {
@@ -39,8 +60,17 @@ export interface MatraModel {
   repeatAfter?: boolean;
   events: EventModel[];
 }
-export interface LineModel { number: number; matras: MatraModel[]; repeatStart?: boolean; repeatEnd?: boolean }
-export interface SectionModel { name: string; startMatra?: number; lines: LineModel[] }
+export interface LineModel {
+  number: number;
+  matras: MatraModel[];
+  repeatStart?: boolean;
+  repeatEnd?: boolean;
+}
+export interface SectionModel {
+  name: string;
+  startMatra?: number;
+  lines: LineModel[];
+}
 export interface SpanModel {
   type: 'meend' | 'khatka' | 'tihai';
   from: string;

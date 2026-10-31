@@ -33,16 +33,37 @@ export abstract class Tickable extends Element {
   protected ignoreTicks = false;
   protected preFormatted = false;
 
-  constructor(ticks: Fraction) { super(); this.ticks = ticks; }
+  constructor(ticks: Fraction) {
+    super();
+    this.ticks = ticks;
+  }
 
-  getTicks(): Fraction { return this.ticks; }
-  shouldIgnoreTicks(): boolean { return this.ignoreTicks; }
-  setVoice(v: Voice): this { this.voice = v; return this; }
-  getVoice(): Voice { return defined(this.voice, 'NoVoice', 'Tickable has no voice'); }
+  getTicks(): Fraction {
+    return this.ticks;
+  }
+  shouldIgnoreTicks(): boolean {
+    return this.ignoreTicks;
+  }
+  setVoice(v: Voice): this {
+    this.voice = v;
+    return this;
+  }
+  getVoice(): Voice {
+    return defined(this.voice, 'NoVoice', 'Tickable has no voice');
+  }
 
-  addModifier(m: Modifier): this { m.setNote(this); this.modifiers.push(m); this.preFormatted = false; return this; }
-  getModifiers(): Modifier[] { return this.modifiers; }
-  getModifiersByCategory(cat: string): Modifier[] { return this.modifiers.filter((m) => m.getCategory() === cat); }
+  addModifier(m: Modifier): this {
+    m.setNote(this);
+    this.modifiers.push(m);
+    this.preFormatted = false;
+    return this;
+  }
+  getModifiers(): Modifier[] {
+    return this.modifiers;
+  }
+  getModifiersByCategory(cat: string): Modifier[] {
+    return this.modifiers.filter((m) => m.getCategory() === cat);
+  }
 
   addToModifierContext(mc: ModifierContext): this {
     this.modifierContext = mc;
@@ -51,27 +72,48 @@ export abstract class Tickable extends Element {
     this.preFormatted = false;
     return this;
   }
-  setModifierContext(mc: ModifierContext): this { this.modifierContext = mc; return this; }
-  getModifierContext(): ModifierContext | undefined { return this.modifierContext; }
+  setModifierContext(mc: ModifierContext): this {
+    this.modifierContext = mc;
+    return this;
+  }
+  getModifierContext(): ModifierContext | undefined {
+    return this.modifierContext;
+  }
 
-  setTickContext(tc: TickContext): this { this.tickContext = tc; this.preFormatted = false; return this; }
-  getTickContext(): TickContext { return defined(this.tickContext, 'NoTickContext', `${this.getCategory()} has no tick context`); }
-  hasTickContext(): boolean { return !!this.tickContext; }
+  setTickContext(tc: TickContext): this {
+    this.tickContext = tc;
+    this.preFormatted = false;
+    return this;
+  }
+  getTickContext(): TickContext {
+    return defined(this.tickContext, 'NoTickContext', `${this.getCategory()} has no tick context`);
+  }
+  hasTickContext(): boolean {
+    return !!this.tickContext;
+  }
 
   /** measure: glyph width + modifier shifts */
   preFormat(): void {
     if (this.preFormatted) return;
     this.notePx = this.measureNotePx();
-    let l = 0, r = 0;
-    if (this.modifierContext) { this.modifierContext.preFormat(); l = this.modifierContext.getLeftShift(); r = this.modifierContext.getRightShift(); }
+    let l = 0,
+      r = 0;
+    if (this.modifierContext) {
+      this.modifierContext.preFormat();
+      l = this.modifierContext.getLeftShift();
+      r = this.modifierContext.getRightShift();
+    }
     this.width = l + this.notePx + r;
     this.preFormatted = true;
   }
   protected abstract measureNotePx(): number;
 
-  getWidth(): number { return this.width; }
+  getWidth(): number {
+    return this.width;
+  }
   getMetrics(): TickableMetrics {
-    const l = this.modifierContext?.getLeftShift() ?? 0, r = this.modifierContext?.getRightShift() ?? 0;
+    const l = this.modifierContext?.getLeftShift() ?? 0,
+      r = this.modifierContext?.getRightShift() ?? 0;
     return { width: this.width, notePx: this.notePx, modLeftPx: l, modRightPx: r };
   }
 
@@ -81,5 +123,7 @@ export abstract class Tickable extends Element {
     return tc.getX() + (tc.getWidth() - this.width) / 2 + this.x_shift;
   }
   /** left edge of the glyph itself (after left modifiers) */
-  getNoteX(): number { return this.getX() + this.getMetrics().modLeftPx; }
+  getNoteX(): number {
+    return this.getX() + this.getMetrics().modLeftPx;
+  }
 }

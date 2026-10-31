@@ -7,9 +7,17 @@ import { markerText } from '../music/taal';
 export class TaalMarker extends Element {
   static CATEGORY = 'taal_marker';
   readonly glyph: Glyph;
-  constructor(readonly marker: string, readonly cx: number, readonly baseline: number) {
+  constructor(
+    readonly marker: string,
+    readonly cx: number,
+    readonly baseline: number,
+  ) {
     super();
-    this.glyph = new Glyph(markerText(marker, Tables.style.script), 'marker', Tables.style.fontSize.marker * (marker.toUpperCase() === 'X' || marker === '×' ? 1.35 : 1));
+    this.glyph = new Glyph(
+      markerText(marker, Tables.style.script),
+      'marker',
+      Tables.style.fontSize.marker * (marker.toUpperCase() === 'X' || marker === '×' ? 1.35 : 1),
+    );
     this.setData('marker_symbol', marker);
   }
   draw(): void {

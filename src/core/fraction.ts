@@ -21,7 +21,8 @@ export class Fraction {
   }
 
   static of(n: number, d = 1): Fraction {
-    if (!Number.isInteger(n) || !Number.isInteger(d) || d === 0) throw new RangeError(`Invalid fraction ${n}/${d}`);
+    if (!Number.isInteger(n) || !Number.isInteger(d) || d === 0)
+      throw new RangeError(`Invalid fraction ${n}/${d}`);
     if (d < 0) {
       n = -n;
       d = -d;
@@ -49,19 +50,45 @@ export class Fraction {
     throw new RangeError(`Duration ${v} is not a simple rational (denominator > ${maxDen})`);
   }
 
-  add(o: Fraction): Fraction { return Fraction.of(this.n * o.d + o.n * this.d, this.d * o.d); }
-  sub(o: Fraction): Fraction { return Fraction.of(this.n * o.d - o.n * this.d, this.d * o.d); }
-  mul(o: Fraction): Fraction { return Fraction.of(this.n * o.n, this.d * o.d); }
-  div(o: Fraction): Fraction { return Fraction.of(this.n * o.d, this.d * o.n); }
-  cmp(o: Fraction): number { return this.n * o.d - o.n * this.d; }
-  eq(o: Fraction): boolean { return this.cmp(o) === 0; }
-  lt(o: Fraction): boolean { return this.cmp(o) < 0; }
-  le(o: Fraction): boolean { return this.cmp(o) <= 0; }
-  gt(o: Fraction): boolean { return this.cmp(o) > 0; }
-  ge(o: Fraction): boolean { return this.cmp(o) >= 0; }
-  isZero(): boolean { return this.n === 0; }
-  toNumber(): number { return this.n / this.d; }
-  toString(): string { return this.d === 1 ? `${this.n}` : `${this.n}/${this.d}`; }
+  add(o: Fraction): Fraction {
+    return Fraction.of(this.n * o.d + o.n * this.d, this.d * o.d);
+  }
+  sub(o: Fraction): Fraction {
+    return Fraction.of(this.n * o.d - o.n * this.d, this.d * o.d);
+  }
+  mul(o: Fraction): Fraction {
+    return Fraction.of(this.n * o.n, this.d * o.d);
+  }
+  div(o: Fraction): Fraction {
+    return Fraction.of(this.n * o.d, this.d * o.n);
+  }
+  cmp(o: Fraction): number {
+    return this.n * o.d - o.n * this.d;
+  }
+  eq(o: Fraction): boolean {
+    return this.cmp(o) === 0;
+  }
+  lt(o: Fraction): boolean {
+    return this.cmp(o) < 0;
+  }
+  le(o: Fraction): boolean {
+    return this.cmp(o) <= 0;
+  }
+  gt(o: Fraction): boolean {
+    return this.cmp(o) > 0;
+  }
+  ge(o: Fraction): boolean {
+    return this.cmp(o) >= 0;
+  }
+  isZero(): boolean {
+    return this.n === 0;
+  }
+  toNumber(): number {
+    return this.n / this.d;
+  }
+  toString(): string {
+    return this.d === 1 ? `${this.n}` : `${this.n}/${this.d}`;
+  }
 }
 
 export const ZERO = Fraction.of(0);

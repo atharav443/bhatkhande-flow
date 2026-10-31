@@ -11,8 +11,21 @@ import { SVGContext } from './render/svgcontext';
 import { collectLabels, type Label } from './render/labels';
 import type { Page } from './stave/page';
 
-export interface FactoryOptions { fonts: FontProvider; style?: Parameters<typeof createStyle>[0]; build?: BuildOptions }
-export interface RenderResult { svg: string; width: number; height: number; scale: number; labels: Label[]; diagnostics: Diagnostic[]; page: Page; context: SVGContext }
+export interface FactoryOptions {
+  fonts: FontProvider;
+  style?: Parameters<typeof createStyle>[0];
+  build?: BuildOptions;
+}
+export interface RenderResult {
+  svg: string;
+  width: number;
+  height: number;
+  scale: number;
+  labels: Label[];
+  diagnostics: Diagnostic[];
+  page: Page;
+  context: SVGContext;
+}
 
 /**
  * Entry point (VexFlow `Factory`): sets the current style + fonts, builds the elements from a bandish,
@@ -20,7 +33,9 @@ export interface RenderResult { svg: string; width: number; height: number; scal
  */
 export class Factory {
   readonly style: BhatkhandeStyle;
-  constructor(readonly options: FactoryOptions) { this.style = createStyle(options.style); }
+  constructor(readonly options: FactoryOptions) {
+    this.style = createStyle(options.style);
+  }
 
   /** A Label Studio export (task or list of tasks) is converted to bandish JSON; anything else passes through. */
   private fromJSONLike(j: any): any {
@@ -42,6 +57,15 @@ export class Factory {
     const scale = Math.min(1, this.style.spacing.maxWidth / page.width);
     const ctx = new SVGContext().resize(page.width, page.height, this.style.background).setScale(scale);
     page.setContext(ctx).draw();
-    return { svg: ctx.toString(), width: page.width * scale, height: page.height * scale, scale, labels: collectLabels(ctx, scale), diagnostics, page, context: ctx };
+    return {
+      svg: ctx.toString(),
+      width: page.width * scale,
+      height: page.height * scale,
+      scale,
+      labels: collectLabels(ctx, scale),
+      diagnostics,
+      page,
+      context: ctx,
+    };
   }
 }

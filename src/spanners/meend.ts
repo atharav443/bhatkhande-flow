@@ -10,20 +10,36 @@ import type { TaalStave } from '../stave/taalstave';
  */
 export class Meend extends Element {
   static CATEGORY = 'meend';
-  constructor(readonly from: Note, readonly to: Note, readonly staves: TaalStave[]) { super(); }
+  constructor(
+    readonly from: Note,
+    readonly to: Note,
+    readonly staves: TaalStave[],
+  ) {
+    super();
+  }
   /** the staves this meend touches, in page order (filled in by the Page) */
-  static lane(): number { return Tables.style.meend.lane; }
+  static lane(): number {
+    return Tables.style.meend.lane;
+  }
   draw(): void {
-    const ctx = this.checkContext(), st = Tables.style.meend;
+    const ctx = this.checkContext(),
+      st = Tables.style.meend;
     this.openGroup(ctx);
     ctx.save().setStrokeStyle(Tables.style.ink).setLineWidth(st.thickness);
     this.staves.forEach((s, i) => {
-      const first = i === 0, last = i === this.staves.length - 1;
-      const a = first ? this.from.getInkBox() : undefined, b = last ? this.to.getInkBox() : undefined;
-      const x0 = a ? a.x + a.w / 2 : s.getLeftX(), x1 = b ? b.x + b.w / 2 : s.getRightX();
+      const first = i === 0,
+        last = i === this.staves.length - 1;
+      const a = first ? this.from.getInkBox() : undefined,
+        b = last ? this.to.getInkBox() : undefined;
+      const x0 = a ? a.x + a.w / 2 : s.getLeftX(),
+        x1 = b ? b.x + b.w / 2 : s.getRightX();
       const y = s.getYForLane('meend');
       const h = Math.min(st.height, Math.max(3, (x1 - x0) * 0.15));
-      ctx.beginPath().moveTo(x0, y).quadraticCurveTo((x0 + x1) / 2, y - 2 * h, x1, y).stroke();
+      ctx
+        .beginPath()
+        .moveTo(x0, y)
+        .quadraticCurveTo((x0 + x1) / 2, y - 2 * h, x1, y)
+        .stroke();
     });
     ctx.restore().closeGroup();
     this.setRendered();

@@ -39,6 +39,6 @@ export { lowerBandish } from './input/lower';
 export { resolveTaal, markerText, type TaalDef } from './music/taal';
 export type { FontProvider, FontRole, Shape } from './font/provider';
 export type * from './input/types';
-export { labelStudioToBandish, regionsOfTask } from "./input/fromLabelStudio";
+export { labelStudioToBandish, regionsOfTask } from './input/fromLabelStudio';
 export { RepeatBar, RepeatType } from './stave/repeatbar';
 export { Volta, VoltaType } from './stave/volta';

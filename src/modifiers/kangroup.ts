@@ -11,7 +11,10 @@ import type { KanNote } from '../notes/swarnote';
 export class KanGroup extends Modifier {
   static CATEGORY = 'kan_group';
   protected preFormatted = false;
-  constructor(readonly kanNotes: KanNote[]) { super(); this.position = ModifierPosition.ABOVE; }
+  constructor(readonly kanNotes: KanNote[]) {
+    super();
+    this.position = ModifierPosition.ABOVE;
+  }
 
   static format(groups: KanGroup[], state: ModifierContextState): void {
     for (const g of groups) {
@@ -40,19 +43,25 @@ export class KanGroup extends Modifier {
     let a = 0;
     for (const n of this.kanNotes) {
       a = Math.max(a, n.getExtents().above);
-      for (const g of n.getModifiersByCategory(KanGroup.CATEGORY) as KanGroup[]) a = Math.max(a, this.nestLift(n) + g.getAbove());
+      for (const g of n.getModifiersByCategory(KanGroup.CATEGORY) as KanGroup[])
+        a = Math.max(a, this.nestLift(n) + g.getAbove());
     }
     return a;
   }
-  getBelow(): number { return Math.max(0, ...this.kanNotes.map((n) => n.getExtents().below)); }
-  private nestLift(n: KanNote): number { return -(n.getGlyph()?.shape.inkTop ?? 0) + Tables.style.decor.kanLift * n.scale; }
+  getBelow(): number {
+    return Math.max(0, ...this.kanNotes.map((n) => n.getExtents().below));
+  }
+  private nestLift(n: KanNote): number {
+    return -(n.getGlyph()?.shape.inkTop ?? 0) + Tables.style.decor.kanLift * n.scale;
+  }
 
   /** position the kan notes: first ink-left at `x`, baseline `y` */
   place(x: number, y: number): void {
     let cx = x;
     for (const n of this.kanNotes) {
       n.setFixedPosition(cx + n.getMetrics().modLeftPx, y);
-      for (const g of n.getModifiersByCategory(KanGroup.CATEGORY) as KanGroup[]) g.place(cx, y - this.nestLift(n));
+      for (const g of n.getModifiersByCategory(KanGroup.CATEGORY) as KanGroup[])
+        g.place(cx, y - this.nestLift(n));
       cx += n.getWidth() + Tables.style.decor.kanGap;
     }
   }

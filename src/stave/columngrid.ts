@@ -14,16 +14,36 @@ export class ColumnGrid {
     readonly vibhagGap: number,
     readonly left: number,
   ) {}
-  get columns(): number { return this.taal.total; }
-  posOf(col: number): number { return ((this.startPos - 1 + col) % this.taal.total) + 1; }
-  colOf(pos: number): number { return (((pos - this.startPos) % this.taal.total) + this.taal.total) % this.taal.total; }
+  get columns(): number {
+    return this.taal.total;
+  }
+  posOf(col: number): number {
+    return ((this.startPos - 1 + col) % this.taal.total) + 1;
+  }
+  colOf(pos: number): number {
+    return (((pos - this.startPos) % this.taal.total) + this.taal.total) % this.taal.total;
+  }
   /** a bar stands BEFORE column `col` when that column starts a vibhag (never before column 0: rows have no opening bar) */
-  barBefore(col: number): boolean { return col > 0 && this.taal.starts.includes(this.posOf(col)); }
-  barsUpTo(col: number): number { let n = 0; for (let c = 1; c <= col; c++) if (this.barBefore(c)) n++; return n; }
-  x(col: number): number { return this.left + col * this.matraWidth + this.barsUpTo(col) * this.vibhagGap; }
+  barBefore(col: number): boolean {
+    return col > 0 && this.taal.starts.includes(this.posOf(col));
+  }
+  barsUpTo(col: number): number {
+    let n = 0;
+    for (let c = 1; c <= col; c++) if (this.barBefore(c)) n++;
+    return n;
+  }
+  x(col: number): number {
+    return this.left + col * this.matraWidth + this.barsUpTo(col) * this.vibhagGap;
+  }
   /** x of the bar standing before `col` */
-  barX(col: number): number { return this.x(col) - this.vibhagGap / 2; }
+  barX(col: number): number {
+    return this.x(col) - this.vibhagGap / 2;
+  }
   /** x of the bar after the last column */
-  endBarX(): number { return this.x(this.columns - 1) + this.matraWidth + this.vibhagGap / 2; }
-  width(): number { return this.endBarX() + this.vibhagGap / 2 - this.left; }
+  endBarX(): number {
+    return this.x(this.columns - 1) + this.matraWidth + this.vibhagGap / 2;
+  }
+  width(): number {
+    return this.endBarX() + this.vibhagGap / 2 - this.left;
+  }
 }
