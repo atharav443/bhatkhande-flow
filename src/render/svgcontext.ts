@@ -58,9 +58,12 @@ export class SVGContext extends RenderContext {
   toString(): string {
     const W = this.width * this.scale,
       H = this.height * this.scale;
+    // 'transparent' / 'none' keep the page see-through: an embedded image then inherits whatever the
+    // document puts behind it instead of painting a white box over it.
+    const painted = this.background && this.background !== 'transparent' && this.background !== 'none';
     return [
       `<svg xmlns="http://www.w3.org/2000/svg" width="${n(W)}" height="${n(H)}" viewBox="0 0 ${n(this.width)} ${n(this.height)}">`,
-      `<rect width="100%" height="100%" fill="${this.background}"/>`,
+      ...(painted ? [`<rect width="100%" height="100%" fill="${this.background}"/>`] : []),
       ...this.out,
       '</svg>',
     ].join('\n');

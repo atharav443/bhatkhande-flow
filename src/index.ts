@@ -8,6 +8,20 @@ export { Tables, createStyle, DEFAULT_STYLE, type BhatkhandeStyle } from './core
 export { RenderContext } from './render/rendercontext.js';
 export { SVGContext } from './render/svgcontext.js';
 export { collectLabels, toYOLO, LABEL_CLASSES, type Label } from './render/labels.js';
+export {
+  PX_TO_PT,
+  PT_TO_EMU,
+  PAGE_PRESETS,
+  textColumn,
+  ptToEmu,
+  pageScale,
+  documentSize,
+  pixelsForDpi,
+  type PagePreset,
+  type PagePresetName,
+  type DocumentSize,
+} from './export/pagefit.js';
+export { setPngDensity, getPngDensity } from './export/png.js';
 export { Tickable } from './notes/tickable.js';
 export { Note } from './notes/note.js';
 export { SwarNote, KanNote, SwarRest } from './notes/swarnote.js';

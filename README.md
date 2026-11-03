@@ -109,6 +109,42 @@ You can paste or drop a **bandish JSON, a swartaal XML or a Label Studio export*
 
 Library use: `<script src="bhatkhande-flow.js">` gives you `BhatkhandeFlow.Factory`, `createBrowserFontProvider(urls)`, `createCanvasFontProvider()` and `toBandishInput(text)`. To run the browser test, install Chromium once (`npx playwright install chromium`), then run `npm run test:browser [labelstudio.json]`.
 
+## Fitting a page into a document (Word, Google Docs)
+
+The page is drawn and emitted in CSS px, which is wider than a printed column (a four-row bandish is
+about 10 in). Two options put it where it belongs:
+
+- `--page letter` / `--page a4` shrink the page to that sheet's text column (1 in margins; change with
+  `--page-margin <pt>`), or `--fit-width <pt>` for an exact column. Nothing is ever enlarged: a bandish
+  row is a taal cycle, so it can shrink but it cannot be re-wrapped.
+- `--png --dpi 300` writes a raster at that same physical size, and the file now carries its dpi, so
+  Word and Google Docs insert it at 6.5 in instead of assuming 96 dpi and dropping a 20 inch image on
+  the page.
+
+`--transparent` drops the white background so the page inherits the document's background.
+
+Because every swar, lyric and marker is already an outline path, none of this needs the reader to have
+Tiro Devanagari or Noto installed. In code:
+
+```bash
+npm run render -- examples/full-sample.json out --page letter --png --dpi 300
+# full-sample: 624x743px = 6.5x7.7in  fitted to 468.0pt  ... png 300dpi 133KB
+```
+
+```js
+import { Resvg } from '@resvg/resvg-js'; // your choice of rasteriser
+import { Factory, setPngDensity, pixelsForDpi } from 'bhatkhande-flow';
+
+const factory = new Factory({ fonts, style: { page: { fitWidthPt: 468 } } }); // 6.5 in column
+const r = factory.renderBandish(text);
+// r.widthPt / r.heightPt / r.widthEmu / r.heightEmu place the image in Word (EMU) or print (pt)
+
+const raster = new Resvg(r.svg, { fitTo: { mode: 'width', value: pixelsForDpi(r.widthPt, 300) } });
+const png = setPngDensity(raster.render().asPng(), 300); // inserts at 6.5 in, not 20 in
+```
+
+`renderBandish()` returns `widthPt`, `heightPt`, `widthEmu` and `heightEmu` alongside `width`/`height`.
+
 ## Volta and repeats
 
 Mark alternate endings with `"volta": 1` / `"volta": 2` on matras and add `"repeatAfter": true` on the last matra of the first ending. A line can also take `"repeatStart"` / `"repeatEnd"`. The second ending rewinds to the first ending's taal positions and is drawn on its own row under it. Brackets work like VexFlow's `Volta`: one piece per row, typed BEGIN, MID, END or BEGIN_END. Every ending except the last is closed; the last is left open. See `examples/volta-demo.json`.

@@ -65,6 +65,11 @@ export interface BhatkhandeStyle {
   bar: { width: number; overshoot: number; thick: number; repeatDot: number };
   /** alternate endings: bracket lane above the row (VexFlow `Volta`) */
   volta: { lane: number; tick: number; thickness: number; labelSize: number };
+  /** where the page is going: paper geometry, in points (everything above is in px at scale 1) */
+  page: {
+    /** shrink the page to this column width, in points, e.g. 468 for US Letter with 1 in margins */
+    fitWidthPt?: number;
+  };
 }
 
 export const DEFAULT_STYLE: BhatkhandeStyle = {
@@ -118,6 +123,7 @@ export const DEFAULT_STYLE: BhatkhandeStyle = {
   tihai: { lane: 20, tick: 5, thickness: 1.2, labelSize: 14, label: 'तिहाई' },
   bar: { width: 1.8, overshoot: 4, thick: 3.6, repeatDot: 2 },
   volta: { lane: 22, tick: 9, thickness: 1.3, labelSize: 15 },
+  page: {},
 };
 
 type DeepPartial<T> = { [K in keyof T]?: T[K] extends object ? DeepPartial<T[K]> : T[K] };
