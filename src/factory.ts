@@ -9,6 +9,7 @@ import type { Diagnostic } from './input/types.js';
 import { buildPage, type BuildOptions } from './builder.js';
 import { SVGContext } from './render/svgcontext.js';
 import { collectLabels, type Label } from './render/labels.js';
+import { documentSize, pageScale } from './export/pagefit.js';
 import type { Page } from './stave/page.js';
 
 export interface FactoryOptions {
@@ -18,8 +19,14 @@ export interface FactoryOptions {
 }
 export interface RenderResult {
   svg: string;
+  /** emitted size, CSS px at 96 dpi (what the SVG's width/height attributes say) */
   width: number;
   height: number;
+  /** the same size in points and EMU: what Word, Google Docs and print use to place the image */
+  widthPt: number;
+  heightPt: number;
+  widthEmu: number;
+  heightEmu: number;
   scale: number;
   labels: Label[];
   diagnostics: Diagnostic[];
@@ -54,13 +61,20 @@ export class Factory {
     const low = lowerBandish(parsed.model, parsed.diagnostics);
     const { page, diagnostics } = buildPage(low, this.options.build);
     page.format();
-    const scale = Math.min(1, this.style.spacing.maxWidth / page.width);
+    const scale = pageScale(page.width, this.style);
     const ctx = new SVGContext().resize(page.width, page.height, this.style.background).setScale(scale);
     page.setContext(ctx).draw();
+    const width = page.width * scale;
+    const height = page.height * scale;
+    const size = documentSize(width, height);
     return {
       svg: ctx.toString(),
-      width: page.width * scale,
-      height: page.height * scale,
+      width,
+      height,
+      widthPt: size.widthPt,
+      heightPt: size.heightPt,
+      widthEmu: size.widthEmu,
+      heightEmu: size.heightEmu,
       scale,
       labels: collectLabels(ctx, scale),
       diagnostics,
